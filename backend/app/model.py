@@ -1,0 +1,2 @@
+# Purpose: Defines your SQLAlchemy database tables (ORM models). Each class here corresponds to a table in your 
+# database (e.g., users, drivers, buses, schedules) mapping Python objects directly to database rows.

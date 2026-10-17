@@ -1,5 +1,3 @@
-# happybus
-
 # Deployment Guide
 
 This guide provides step-by-step instructions for running and deploying the `happybus_webapp` application using Docker Compose or via a manual local setup.
