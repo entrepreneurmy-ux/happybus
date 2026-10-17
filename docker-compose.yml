@@ -2,7 +2,6 @@ services:
   db:
     image: postgres:15-alpine
     container_name: postgresql
-    restart: always
     environment:
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: dbuserpass
@@ -10,21 +9,23 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgresql_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
   web:
-    build:
+    build: 
       context: ./backend
       dockerfile: Dockerfile
     container_name: fastapi_app
-    restart: always
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8000:8000"
     environment:
-      # Change 'localhost' to 'db' so FastAPI connects to the postgres container
       - DATABASE_URL=postgresql://dbuser:dbuserpass@db:5432/happybus_db
+    volumes:
+      - ./backend:/app
+      - ./frontend:/frontend
     depends_on:
       - db
 
 volumes:
-  postgresql_data:
+  postgres_data:
