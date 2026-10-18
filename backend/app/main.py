@@ -29,6 +29,13 @@ app.mount("/js", StaticFiles(directory=str(ASSETS_DIR / "js")), name="js")
 app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
 
 # Serve HTML pages safely
+@app.get("/", response_class=HTMLResponse)
+def read_root():
+    file_path = FRONTEND_DIR / "index.html"
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail=f"index.html not found at {file_path}")
+    return file_path.read_text(encoding="utf-8")
+
 @app.get("/index.html", response_class=HTMLResponse)
 def read_root():
     file_path = FRONTEND_DIR / "index.html"
