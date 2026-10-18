@@ -85,7 +85,7 @@ footer {
     text-align: center;
     padding: 6rem 1rem;
     background-color: var(--header-bg);
-    margin-bottom: 8rem;
+    margin-bottom: 12rem;
     border-bottom: 1px solid var(--border-color);
 }
 
