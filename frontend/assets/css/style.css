@@ -7,7 +7,7 @@
     --text-primary: #0f172a;        /* Deep Slate Charcoal */
     --text-secondary: #475569;      /* Muted Slate */
     --accent-primary: #1e293b;      /* Dark Slate Blue / Primary Buttons */
-    --accent-secondary: #facc1541;    /* Yellow Bus Accent */
+    --accent-secondary: #facc15;    /* Yellow Bus Accent */
     --border-color: #e2e8f0;        /* Soft Light Gray */
 }
 
@@ -179,7 +179,7 @@ main {
     box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
     border: 1px solid var(--border-color);
     width: 100%;
-    max-width: 450px;
+    max-width: 400px;
     margin: 5rem auto;
 }
 
@@ -230,17 +230,30 @@ main {
     cursor: not-allowed;
 }
 
-.forgot-pass {
-    margin: -5px 0 15px;
-    font-size: 0.85rem;
+.form-options {
+    display: flex;
+    justify-content: space-between; /* Pushes Remember Me to the left and Forgot Password to the right */
+    align-items: center;
+    margin: 10px 0 20px 0;
+    font-size: 0.9rem;
 }
 
-.forgot-pass a {
-    color: var(--text-secondary);
+.remember-me-label {
+display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    white-space: nowrap !important; /* Prevents text from breaking into two lines */
+    flex-shrink: 0 !important;      /* Prevents the label from shrinking */
+    cursor: pointer;
+}
+
+.forgot-link {
+    color: #007bff; /* Adjust to match your theme color */
     text-decoration: none;
 }
 
-.forgot-pass a:hover {
+.forgot-link:hover {
     text-decoration: underline;
 }
 

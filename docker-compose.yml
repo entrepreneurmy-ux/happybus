@@ -22,7 +22,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://dbuser:dbuserpass@db:5432/happybus_db
     volumes:
-      - ./backend:/app
+      - ./backend:/backend
       - ./frontend:/frontend
     depends_on:
       - db
