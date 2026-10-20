@@ -24,8 +24,8 @@ if not FRONTEND_DIR.exists():
     FRONTEND_DIR = Path(__file__).resolve().parent.parent.parent / "frontend"
 
 # Mount frontend assets safely
-app.mount("/css", StaticFiles(directory=str(ASSETS_DIR / "css")), name="css")
-app.mount("/js", StaticFiles(directory=str(ASSETS_DIR / "js")), name="js")
+#app.mount("/css", StaticFiles(directory=str(ASSETS_DIR / "css")), name="css")
+#app.mount("/js", StaticFiles(directory=str(ASSETS_DIR / "js")), name="js")
 app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
 
 # Serve HTML pages safely

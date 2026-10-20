@@ -7,7 +7,7 @@
     --text-primary: #0f172a;        /* Deep Slate Charcoal */
     --text-secondary: #475569;      /* Muted Slate */
     --accent-primary: #1e293b;      /* Dark Slate Blue / Primary Buttons */
-    --accent-secondary: #facc15;    /* Yellow Bus Accent */
+    --accent-secondary: #facc1541;    /* Yellow Bus Accent */
     --border-color: #e2e8f0;        /* Soft Light Gray */
 }
 
@@ -179,7 +179,7 @@ main {
     box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
     border: 1px solid var(--border-color);
     width: 100%;
-    max-width: 360px;
+    max-width: 450px;
     margin: 5rem auto;
 }
 
