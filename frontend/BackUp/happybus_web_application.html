@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappyBus - Smart & Safe School Transport</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            slate: {
+              800: '#1e293b',
+              900: '#0f172a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-amber-100 selection:text-amber-800">
+
+  <!-- TOP GLOBAL NAV SWITCHER -->
+  <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('landing')">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-amber-500/20">
+            <i data-lucide="bus" class="w-6 h-6 stroke-[2.5]"></i>
+          </div>
+          <div>
+            <span class="text-xl font-extrabold tracking-tight text-slate-900">Happy<span class="text-amber-500">Bus</span></span>
+            <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">v2.4 Active</span>
+          </div>
+        </div>
+
+        <!-- Quick Switcher Tabs -->
+        <nav class="hidden lg:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/80">
+          <button onclick="switchView('landing')" id="tab-landing" class="view-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <i data-lucide="home" class="w-3.5 h-3.5"></i> Landing
+          </button>
+          <button onclick="switchView('login')" id="tab-login" class="view-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Login
+          </button>
+          <button onclick="switchView('signup')" id="tab-signup" class="view-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Sign Up
+          </button>
+          <button onclick="switchView('forgot')" id="tab-forgot" class="view-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <i data-lucide="key-round" class="w-3.5 h-3.5"></i> Recovery
+          </button>
+          <div class="w-px h-4 bg-slate-300 mx-1"></div>
+          <button onclick="switchView('parent')" id="tab-parent" class="view-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <i data-lucide="heart" class="w-3.5 h-3.5"></i> Parent Dash
+          </button>
+          <button onclick="switchView('driver')" id="tab-driver" class="view-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Driver Dash
+          </button>
+          <button onclick="switchView('admin')" id="tab-admin" class="view-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin Dash
+          </button>
+        </nav>
+
+        <!-- Mobile Menu Select -->
+        <div class="lg:hidden flex items-center">
+          <select onchange="switchView(this.value)" class="bg-amber-50 text-amber-800 border border-amber-300 text-xs font-bold rounded-lg p-2 outline-none">
+            <option value="landing">1. Landing Page</option>
+            <option value="login">2. Login Page</option>
+            <option value="signup">3. Sign Up Page</option>
+            <option value="forgot">4. Forgot Password</option>
+            <option value="parent">5. Parent Dashboard</option>
+            <option value="driver">6. Driver Dashboard</option>
+            <option value="admin">7. Admin Dashboard</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER FOR VIEWS -->
+  <main class="flex-grow">
+
+    <!-- ==================== 1. LANDING PAGE VIEW ==================== -->
+    <section id="view-landing" class="app-view hidden">
+      <!-- Bright Hero -->
+      <div class="bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-white py-16 lg:py-24 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6">
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Next-Gen School Transit
+              </span>
+              <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none">
+                Peace of mind on every <span class="text-amber-500 underline decoration-amber-300 decoration-4 underline-offset-4">school ride</span>.
+              </h1>
+              <p class="text-lg text-slate-600 max-w-2xl leading-relaxed">
+                Live GPS tracking, smart check-in notifications, and optimized routes. Keeping parents reassured and students safe every single day.
+              </p>
+
+              <!-- Interactive Search Box -->
+              <div class="bg-white p-3 rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200 flex flex-col sm:flex-row gap-3">
+                <div class="flex-1 flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                  <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+                  <input type="text" id="routeSearchInput" placeholder="Enter school name or Zip Code..." class="bg-transparent border-none text-sm w-full outline-none font-medium">
+                </div>
+                <button onclick="searchRoutes()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                  <span>Check Availability</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+              <div id="searchResult" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-sm font-semibold"></div>
+            </div>
+
+            <div class="lg:col-span-5 relative">
+              <div class="absolute -top-6 -left-6 w-32 h-32 bg-amber-300/30 rounded-full blur-2xl"></div>
+              <div class="relative bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 space-y-4">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                      <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-slate-900 text-sm">Bus #42 Arrived</h4>
+                      <p class="text-xs text-slate-500">Oakridge Elementary • 2 mins ago</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Safe Drop</span>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                  <div class="flex justify-between items-center text-xs font-bold text-slate-500">
+                    <span>LIVE BUS #42 STATUS</span>
+                    <span class="text-amber-600 animate-pulse">● EN ROUTE</span>
+                  </div>
+                  <div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div class="h-full bg-amber-500 w-3/4 rounded-full"></div>
+                  </div>
+                  <div class="flex justify-between items-center text-xs text-slate-700 font-bold">
+                    <span>Current Stop: 4th Ave</span>
+                    <span>ETA: 8 Mins</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Stats Bar -->
+      <div class="bg-slate-900 py-10 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">12,400+</div>
+              <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">Daily Safe Rides</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">99.4%</div>
+              <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">On-Time Arrival Rate</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">180+</div>
+              <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">Partner Schools</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">4.9/5★</div>
+              <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">Parent Satisfaction</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Grid -->
+      <div class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-3xl font-extrabold text-slate-900">Designed for ultimate peace of mind</h2>
+            <p class="text-slate-600 mt-3">Smart features connecting schools, parents, and drivers in real-time.</p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="p-8 rounded-3xl bg-amber-50/50 border border-amber-100 space-y-4 hover:shadow-lg transition">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                <i data-lucide="map-pin" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900">Real-time GPS Tracking</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">Watch the bus move live on the map. Get custom alerts when the bus is 2 stops away from your home.</p>
+            </div>
+            <div class="p-8 rounded-3xl bg-amber-50/50 border border-amber-100 space-y-4 hover:shadow-lg transition">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900">NFC Boarding Alerts</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">Students tap their HappyBus badge upon boarding and exiting. Instant push notifications sent to parents.</p>
+            </div>
+            <div class="p-8 rounded-3xl bg-amber-50/50 border border-amber-100 space-y-4 hover:shadow-lg transition">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900">Vetted Drivers & SOS</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">All drivers pass rigorous background checks. Built-in instant emergency alerts for total safety.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bus Pass Calculator -->
+      <div class="py-16 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4">
+          <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200">
+            <h3 class="text-2xl font-black text-slate-900 text-center mb-6">Interactive Bus Pass Calculator</h3>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Number of Students</label>
+                  <input type="range" id="calcStudents" min="1" max="4" value="1" oninput="updateCalculator()" class="w-full accent-amber-500">
+                  <div class="flex justify-between text-xs font-bold text-amber-600 mt-1">
+                    <span>1 Child</span><span>2 Children</span><span>3 Children</span><span>4 Children</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Billing Plan</label>
+                  <select id="calcPlan" onchange="updateCalculator()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold">
+                    <option value="monthly">Monthly Subscription</option>
+                    <option value="annual">Annual Pass (Save 20%)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="bg-amber-500 text-slate-950 p-6 rounded-2xl text-center space-y-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-900">Estimated Total</span>
+                <div id="calcPriceDisplay" class="text-4xl font-black">$60 <span class="text-base font-bold">/ month</span></div>
+                <p class="text-xs font-semibold text-slate-900">Includes live GPS, SMS alerts & dedicated support.</p>
+                <button onclick="switchView('signup')" class="mt-4 w-full bg-slate-950 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-sm transition">
+                  Get Started Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. LOGIN PAGE VIEW ==================== -->
+    <section id="view-login" class="app-view hidden py-16">
+      <div class="max-w-md mx-auto px-4">
+        <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
+          <div class="text-center space-y-2">
+            <h2 class="text-3xl font-black text-slate-900">Welcome Back</h2>
+            <p class="text-sm text-slate-500">Select your account type to continue</p>
+          </div>
+
+          <!-- Role Selector Buttons -->
+          <div class="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-2xl">
+            <button onclick="selectLoginRole('Parent')" id="login-role-parent" class="role-btn py-2 text-xs font-bold rounded-xl bg-white shadow text-amber-600 transition">Parent</button>
+            <button onclick="selectLoginRole('Driver')" id="login-role-driver" class="role-btn py-2 text-xs font-bold rounded-xl text-slate-600 transition">Driver</button>
+            <button onclick="selectLoginRole('Admin')" id="login-role-admin" class="role-btn py-2 text-xs font-bold rounded-xl text-slate-600 transition">Admin</button>
+          </div>
+
+          <form onsubmit="handleLogin(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+              <input type="email" id="loginEmail" required value="parent@happybus.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="text-xs font-bold text-slate-700">Password</label>
+                <button type="button" onclick="switchView('forgot')" class="text-xs font-bold text-amber-600 hover:underline">Forgot?</button>
+              </div>
+              <input type="password" id="loginPassword" required value="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+            </div>
+            <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition">
+              Sign In to Dashboard
+            </button>
+          </form>
+
+          <!-- Quick Fill Demo Buttons -->
+          <div class="pt-4 border-t border-slate-100 space-y-2">
+            <span class="block text-center text-xs font-bold text-slate-400 uppercase">Quick Demo Login</span>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="quickLogin('parent')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200">Parent</button>
+              <button onclick="quickLogin('driver')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200">Driver</button>
+              <button onclick="quickLogin('admin')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200">Admin</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. SIGN UP PAGE VIEW ==================== -->
+    <section id="view-signup" class="app-view hidden py-16">
+      <div class="max-w-lg mx-auto px-4">
+        <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
+          <div class="text-center space-y-2">
+            <h2 class="text-3xl font-black text-slate-900">Create Account</h2>
+            <p class="text-sm text-slate-500">Register as a Parent or Driver to get started</p>
+          </div>
+
+          <form onsubmit="handleSignup(event)" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">First Name</label>
+                <input type="text" required placeholder="Sarah" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Last Name</label>
+                <input type="text" required placeholder="Jenkins" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+              <input type="email" required placeholder="sarah@example.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Account Role</label>
+              <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold">
+                <option value="parent">Parent / Guardian</option>
+                <option value="driver">Bus Driver / Operator</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Create Password</label>
+              <input type="password" id="signupPass" oninput="checkPasswordStrength()" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+              <div class="mt-2 flex items-center gap-2">
+                <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div id="strengthBar" class="h-full bg-slate-300 w-0 transition-all"></div>
+                </div>
+                <span id="strengthText" class="text-xs font-bold text-slate-400">Weak</span>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition">
+              Complete Registration
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. FORGOT PASSWORD VIEW ==================== -->
+    <section id="view-forgot" class="app-view hidden py-16">
+      <div class="max-w-md mx-auto px-4">
+        <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
+          <div class="text-center space-y-2">
+            <h2 class="text-3xl font-black text-slate-900">Password Recovery</h2>
+            <p id="forgotSubtitle" class="text-sm text-slate-500">Step 1 of 3: Enter your registered email</p>
+          </div>
+
+          <!-- Step 1: Request OTP -->
+          <div id="forgotStep1" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Account Email</label>
+              <input type="email" id="forgotEmail" placeholder="parent@happybus.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+            </div>
+            <button onclick="goToForgotStep(2)" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl shadow transition">
+              Send 6-Digit OTP Code
+            </button>
+          </div>
+
+          <!-- Step 2: Enter OTP -->
+          <div id="forgotStep2" class="space-y-4 hidden">
+            <div class="flex justify-center gap-2">
+              <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl font-bold bg-slate-50 border border-slate-300 rounded-xl">
+              <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl font-bold bg-slate-50 border border-slate-300 rounded-xl">
+              <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl font-bold bg-slate-50 border border-slate-300 rounded-xl">
+              <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl font-bold bg-slate-50 border border-slate-300 rounded-xl">
+            </div>
+            <button onclick="goToForgotStep(3)" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl shadow transition">
+              Verify Code
+            </button>
+          </div>
+
+          <!-- Step 3: Reset Password -->
+          <div id="forgotStep3" class="space-y-4 hidden">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">New Password</label>
+              <input type="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+            </div>
+            <button onclick="finishPasswordReset()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl shadow transition">
+              Update Password
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. PARENT DASHBOARD VIEW ==================== -->
+    <section id="view-parent" class="app-view hidden py-8 bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+        <!-- Top Welcome Card -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div class="flex items-center gap-4">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" class="w-14 h-14 rounded-2xl object-cover border-2 border-amber-500">
+            <div>
+              <h2 class="text-2xl font-extrabold text-slate-900">Good morning, Sarah!</h2>
+              <p class="text-xs text-slate-500 font-bold">Child: Leo Jenkins • Grade 3B • Oakridge Elementary</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> On Board Bus #42
+            </span>
+            <button onclick="openDriverContactModal()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-sm flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4"></i> Contact Driver
+            </button>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-6">
+
+          <!-- Left Canvas Map Tracker -->
+          <div class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Live Route Tracker</h3>
+                <p class="text-xs text-slate-500">Bus #42 • Route Red-A</p>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl text-right">
+                <span class="text-xs font-bold text-amber-800 block">ESTIMATED ARRIVAL</span>
+                <span class="text-lg font-black text-amber-600" id="parentEtaClock">08 Mins 42 Secs</span>
+              </div>
+            </div>
+
+            <!-- Animated Canvas Map -->
+            <div class="relative w-full h-[360px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-inner">
+              <canvas id="parentMapCanvas" class="w-full h-full block"></canvas>
+              <div class="absolute bottom-4 left-4 bg-slate-900/90 text-white p-3 rounded-xl border border-slate-700 text-xs space-y-1">
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Current Bus Position</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Home Stop (Drop point)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Status & Notifications Sidebar -->
+          <div class="lg:col-span-4 space-y-6">
+
+            <!-- Student Status Badge -->
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+              <h3 class="text-md font-bold text-slate-900">Today's Timeline</h3>
+              <div class="space-y-4 relative pl-4 border-l-2 border-slate-100">
+                <div class="relative">
+                  <span class="absolute -left-[21px] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500"></span>
+                  <div class="text-xs font-bold text-slate-900">07:45 AM • Boarded Bus</div>
+                  <p class="text-xs text-slate-500">Badge tapped by Leo at Morning Stop #3</p>
+                </div>
+                <div class="relative">
+                  <span class="absolute -left-[21px] top-1 w-3.5 h-3.5 rounded-full bg-amber-500 animate-pulse"></span>
+                  <div class="text-xs font-bold text-amber-600">En Route to School</div>
+                  <p class="text-xs text-slate-500">Currently passing Maple Street</p>
+                </div>
+                <div class="relative opacity-40">
+                  <span class="absolute -left-[21px] top-1 w-3.5 h-3.5 rounded-full bg-slate-300"></span>
+                  <div class="text-xs font-bold text-slate-700">08:15 AM • Expected Drop</div>
+                  <p class="text-xs text-slate-500">Oakridge Main Gate</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Book Pass -->
+            <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 rounded-3xl p-6 shadow-md space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Pass Renewal</span>
+                <span class="bg-slate-950 text-white text-xs px-2.5 py-1 rounded-full font-bold">12 Days Left</span>
+              </div>
+              <h4 class="text-lg font-black">Monthly Pass Auto-Renewal</h4>
+              <button onclick="alert('Bus pass auto-renewed successfully!')" class="w-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold py-3 rounded-xl transition">
+                Renew Pass ($60/mo)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. DRIVER DASHBOARD VIEW ==================== -->
+    <section id="view-driver" class="app-view hidden py-8 bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+        <!-- Top Bar -->
+        <div class="bg-slate-900 text-white rounded-3xl p-6 shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border border-slate-800">
+          <div>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">Active Shift</span>
+            <h2 class="text-2xl font-black">Driver John Doe • Bus #42</h2>
+            <p class="text-xs text-slate-400">Route: Oakridge Morning Pickups (14 Students Total)</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="triggerAnnouncerModal()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl transition flex items-center gap-2">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Stop Announcer
+            </button>
+            <button onclick="openEmergencyModal()" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl transition flex items-center gap-2">
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i> Alert Delay
+            </button>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-6">
+
+          <!-- Roster Check-in Grid -->
+          <div class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-bold text-slate-900">Student Manifest Check-in</h3>
+              <span class="text-xs font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full" id="boardedCount">10 / 14 Boarded</span>
+            </div>
+
+            <!-- Student Checklist Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead>
+                  <tr class="border-b border-slate-200 text-slate-400 text-xs font-bold uppercase">
+                    <th class="pb-3">Student Name</th>
+                    <th class="pb-3">Pickup Stop</th>
+                    <th class="pb-3">Status</th>
+                    <th class="pb-3 text-right">Quick Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100" id="driverRosterTable">
+                  <!-- JS populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Route Progress Control -->
+          <div class="lg:col-span-4 bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-6">
+            <h3 class="text-lg font-bold text-slate-900">Route Stops</h3>
+            <div class="space-y-4">
+              <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-1">
+                <span class="text-xs font-bold text-amber-800">CURRENT NEXT STOP</span>
+                <h4 class="text-base font-black text-slate-900">Stop 4: Elm Street & 5th Ave</h4>
+                <p class="text-xs text-slate-500">Scheduled: 08:02 AM • 3 Students Waiting</p>
+                <button onclick="advanceNextStop()" class="mt-3 w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded-xl text-xs transition">
+                  Mark Stop Complete & Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 7. ADMIN DASHBOARD VIEW ==================== -->
+    <section id="view-admin" class="app-view hidden py-8 bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+        <!-- Admin Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+          <div>
+            <h2 class="text-2xl font-black text-slate-900">Fleet Operations Control</h2>
+            <p class="text-xs font-bold text-slate-500">District #4 Central Monitoring</p>
+          </div>
+          <button onclick="openAddBusModal()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center gap-2">
+            <i data-lucide="plus" class="w-4 h-4"></i> Add New Bus to Fleet
+          </button>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase">Total Students</span>
+            <div class="text-3xl font-black text-slate-900">1,248</div>
+            <span class="text-xs font-bold text-emerald-600">↑ +12% this month</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase">Active Buses</span>
+            <div class="text-3xl font-black text-slate-900">32 / 35</div>
+            <span class="text-xs font-bold text-amber-600">3 Maintenance</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase">On-Time Arrival</span>
+            <div class="text-3xl font-black text-slate-900">98.2%</div>
+            <span class="text-xs font-bold text-emerald-600">Target >95%</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase">Monthly Revenue</span>
+            <div class="text-3xl font-black text-slate-900">$74,880</div>
+            <span class="text-xs font-bold text-emerald-600">100% Collected</span>
+          </div>
+        </div>
+
+        <!-- SVG Rides Chart & Fleet Table -->
+        <div class="grid lg:grid-cols-12 gap-6">
+
+          <!-- Chart -->
+          <div class="lg:col-span-7 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-base font-bold text-slate-900">Weekly Completed Rides</h3>
+            <div class="h-64 flex items-end justify-between gap-3 pt-8 pb-2 px-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                <div class="w-full bg-amber-500 rounded-t-lg" style="height: 60%"></div>
+                <span class="text-xs font-bold text-slate-500">Mon</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                <div class="w-full bg-amber-500 rounded-t-lg" style="height: 85%"></div>
+                <span class="text-xs font-bold text-slate-500">Tue</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                <div class="w-full bg-amber-500 rounded-t-lg" style="height: 75%"></div>
+                <span class="text-xs font-bold text-slate-500">Wed</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                <div class="w-full bg-amber-500 rounded-t-lg" style="height: 90%"></div>
+                <span class="text-xs font-bold text-slate-500">Thu</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                <div class="w-full bg-amber-500 rounded-t-lg" style="height: 95%"></div>
+                <span class="text-xs font-bold text-slate-500">Fri</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fleet Status Table -->
+          <div class="lg:col-span-5 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-base font-bold text-slate-900">Fleet Active Status</h3>
+            <div class="space-y-3" id="adminFleetList">
+              <!-- JS Populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL OVERLAYS -->
+  <!-- Driver Contact Overlay -->
+  <div id="driverContactModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 border border-slate-200 shadow-2xl">
+      <div class="flex justify-between items-center">
+        <h3 class="font-black text-slate-900">Driver Contact</h3>
+        <button onclick="closeModal('driverContactModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="text-center space-y-2">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120" class="w-16 h-16 rounded-full mx-auto object-cover border-2 border-amber-500">
+        <h4 class="font-bold text-slate-900">John Doe (Bus #42)</h4>
+        <p class="text-xs text-slate-500">Route Red-A Driver</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <a href="tel:5550199" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl text-xs text-center block">Call Driver</a>
+        <button onclick="alert('Message sent to driver tablet!')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 rounded-xl text-xs">Send SMS</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS LOGIC & ROUTINES -->
+  <script>
+    // Application State
+    let currentRole = 'Parent';
+    let busCanvas, busCtx;
+    let busPosition = 0;
+
+    // Student Manifest Data
+    const studentsData = [
+      { id: 1, name: "Leo Jenkins", stop: "Stop 3: Oak Ave", status: "Boarded" },
+      { id: 2, name: "Emma Watson", stop: "Stop 1: Pine St", status: "Boarded" },
+      { id: 3, name: "Noah Smith", stop: "Stop 4: Elm St", status: "Pending" },
+      { id: 4, name: "Sophia Davis", stop: "Stop 4: Elm St", status: "Pending" }
+    ];
+
+    const fleetData = [
+      { id: "BUS-42", driver: "John Doe", capacity: "40 Seats", status: "Active" },
+      { id: "BUS-18", driver: "Maria Garcia", capacity: "32 Seats", status: "Active" },
+      { id: "BUS-09", driver: "Robert Chen", capacity: "48 Seats", status: "Maintenance" }
+    ];
+
+    // Initializer
+    window.onload = function() {
+      lucide.createIcons();
+      switchView('landing');
+      initCanvasMap();
+      renderDriverRoster();
+      renderFleetList();
+    };
+
+    // Navigation Switcher
+    function switchView(viewId) {
+      document.querySelectorAll('.app-view').forEach(view => view.classList.add('hidden'));
+      const activeView = document.getElementById(`view-${viewId}`);
+      if (activeView) activeView.classList.remove('hidden');
+
+      // Highlight Header Tabs
+      document.querySelectorAll('.view-tab').forEach(tab => {
+        tab.classList.remove('bg-amber-500', 'text-slate-950', 'shadow-sm');
+        tab.classList.add('text-slate-600');
+      });
+      const activeTab = document.getElementById(`tab-${viewId}`);
+      if (activeTab) {
+        activeTab.classList.add('bg-amber-500', 'text-slate-950', 'shadow-sm');
+        activeTab.classList.remove('text-slate-600');
+      }
+
+      window.scrollTo(0,0);
+    }
+
+    // Role Selection Logic
+    function selectLoginRole(role) {
+      currentRole = role;
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.classList.remove('bg-white', 'shadow', 'text-amber-600');
+        btn.classList.add('text-slate-600');
+      });
+      const selectedBtn = document.getElementById(`login-role-${role.toLowerCase()}`);
+      if (selectedBtn) {
+        selectedBtn.classList.add('bg-white', 'shadow', 'text-amber-600');
+      }
+    }
+
+    function quickLogin(role) {
+      selectLoginRole(role.charAt(0).toUpperCase() + role.slice(1));
+      switchView(role);
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      switchView(currentRole.toLowerCase());
+    }
+
+    // Interactive Bus Calculator
+    function updateCalculator() {
+      const count = document.getElementById('calcStudents').value;
+      const plan = document.getElementById('calcPlan').value;
+      let price = count * 60;
+      if (plan === 'annual') price = Math.round(price * 0.8);
+      document.getElementById('calcPriceDisplay').innerHTML = `$${price} <span class="text-base font-bold">/ ${plan === 'annual' ? 'yr' : 'mo'}</span>`;
+    }
+
+    // Search Routes Feature
+    function searchRoutes() {
+      const val = document.getElementById('routeSearchInput').value;
+      const res = document.getElementById('searchResult');
+      if (!val) return;
+      res.classList.remove('hidden');
+      res.innerText = `Great news! 4 HappyBus active pickup routes serve district zone '${val}'. Passes start at $60/mo.`;
+    }
+
+    // Canvas Route Simulation
+    function initCanvasMap() {
+      busCanvas = document.getElementById('parentMapCanvas');
+      if (!busCanvas) return;
+      busCtx = busCanvas.getContext('2d');
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      animateMap();
+    }
+
+    function resizeCanvas() {
+      if (!busCanvas) return;
+      busCanvas.width = busCanvas.offsetWidth;
+      busCanvas.height = busCanvas.offsetHeight;
+    }
+
+    function animateMap() {
+      if (!busCtx) return;
+      busCtx.clearRect(0, 0, busCanvas.width, busCanvas.height);
+
+      const w = busCanvas.width;
+      const h = busCanvas.height;
+
+      // Draw Route Path Line
+      busCtx.beginPath();
+      busCtx.moveTo(w * 0.1, h * 0.5);
+      busCtx.bezierCurveTo(w * 0.3, h * 0.2, w * 0.7, h * 0.8, w * 0.9, h * 0.5);
+      busCtx.strokeStyle = '#f59e0b';
+      busCtx.lineWidth = 6;
+      busCtx.stroke();
+
+      // Bus Position calculation
+      busPosition = (busPosition + 0.002) % 1;
+      const busX = w * (0.1 + busPosition * 0.8);
+      const busY = h * (0.5 + Math.sin(busPosition * Math.PI * 2) * 0.2);
+
+      // Draw Bus Marker
+      busCtx.beginPath();
+      busCtx.arc(busX, busY, 12, 0, Math.PI * 2);
+      busCtx.fillStyle = '#f59e0b';
+      busCtx.fill();
+      busCtx.strokeStyle = '#ffffff';
+      busCtx.lineWidth = 3;
+      busCtx.stroke();
+
+      requestAnimationFrame(animateMap);
+    }
+
+    // Driver Roster Table Render
+    function renderDriverRoster() {
+      const tbody = document.getElementById('driverRosterTable');
+      if (!tbody) return;
+      tbody.innerHTML = studentsData.map(s => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 font-bold text-slate-900">${s.name}</td>
+          <td class="py-3 text-xs text-slate-500">${s.stop}</td>
+          <td class="py-3">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${s.status === 'Boarded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${s.status}
+            </span>
+          </td>
+          <td class="py-3 text-right">
+            <button onclick="toggleStudentBoard('${s.id}')" class="px-3 py-1 bg-slate-900 text-white rounded-lg text-xs font-bold hover:bg-slate-800">
+              Toggle Status
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function toggleStudentBoard(id) {
+      const student = studentsData.find(s => s.id == id);
+      if (student) {
+        student.status = student.status === 'Boarded' ? 'Pending' : 'Boarded';
+        renderDriverRoster();
+      }
+    }
+
+    // Fleet List Render
+    function renderFleetList() {
+      const container = document.getElementById('adminFleetList');
+      if (!container) return;
+      container.innerHTML = fleetData.map(f => `
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-slate-900 text-sm">${f.id} • ${f.driver}</h4>
+            <p class="text-xs text-slate-500">${f.capacity}</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-bold ${f.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'}">
+            ${f.status}
+          </span>
+        </div>
+      `).join('');
+    }
+
+    // Password Recovery Navigation
+    function goToForgotStep(step) {
+      document.getElementById('forgotStep1').classList.add('hidden');
+      document.getElementById('forgotStep2').classList.add('hidden');
+      document.getElementById('forgotStep3').classList.add('hidden');
+
+      document.getElementById(`forgotStep${step}`).classList.remove('hidden');
+      document.getElementById('forgotSubtitle').innerText = `Step ${step} of 3`;
+    }
+
+    function finishPasswordReset() {
+      alert('Password updated successfully! Redirecting to login...');
+      switchView('login');
+    }
+
+    // Password Strength Indicator
+    function checkPasswordStrength() {
+      const val = document.getElementById('signupPass').value;
+      const bar = document.getElementById('strengthBar');
+      const txt = document.getElementById('strengthText');
+      if (val.length > 8) {
+        bar.style.width = '100%';
+        bar.className = 'h-full bg-emerald-500 transition-all';
+        txt.innerText = 'Strong';
+      } else if (val.length > 4) {
+        bar.style.width = '50%';
+        bar.className = 'h-full bg-amber-500 transition-all';
+        txt.innerText = 'Medium';
+      } else {
+        bar.style.width = '20%';
+        bar.className = 'h-full bg-rose-500 transition-all';
+        txt.innerText = 'Weak';
+      }
+    }
+
+    // Modal Handlers
+    function openDriverContactModal() {
+      document.getElementById('driverContactModal').classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HappyBus | SignUp</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">HappyBus</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="signupcard">
+        <h2>Create Account</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Select your role</option>
+                    <option value="admin">Admin</option>
+                    <option value="parent">Parent</option>
+                    <option value="driver">Driver</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter password">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="phone" id="phone" required placeholder="0191234567">
+            </div>
+
+            <button type="submit" id="submitBtn">Sign Up</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+  <script>
+   
+  
+  </script>
+
+    <footer>
+        <p>&copy; 2026 HappyBus. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

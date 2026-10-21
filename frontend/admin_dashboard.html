@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappyBus - Admin Operations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
+            slate: { 800: '#1e293b', 900: '#0f172a' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-amber-500/20">
+            <i data-lucide="bus" class="w-6 h-6 stroke-[2.5]"></i>
+          </div>
+          <span class="text-xl font-extrabold tracking-tight text-slate-900">Happy<span class="text-amber-500">Bus</span></span>
+        </a>
+        <a href="login.html" class="text-xs font-bold text-slate-500 hover:text-slate-800">Sign Out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow py-8 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 class="text-2xl font-black text-slate-900">Fleet Operations Control</h2>
+          <p class="text-xs font-bold text-slate-500">District #4 Central Monitoring</p>
+        </div>
+        <button onclick="alert('Bus Addition Modal')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center gap-2">
+          <i data-lucide="plus" class="w-4 h-4"></i> Add New Bus to Fleet
+        </button>
+      </div>
+
+      <!-- Metric KPI Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">Total Students</span>
+          <div class="text-3xl font-black text-slate-900">1,248</div>
+          <span class="text-xs font-bold text-emerald-600">↑ +12% this month</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">Active Buses</span>
+          <div class="text-3xl font-black text-slate-900">32 / 35</div>
+          <span class="text-xs font-bold text-amber-600">3 Maintenance</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">On-Time Arrival</span>
+          <div class="text-3xl font-black text-slate-900">98.2%</div>
+          <span class="text-xs font-bold text-emerald-600">Target >95%</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">Monthly Revenue</span>
+          <div class="text-3xl font-black text-slate-900">$74,880</div>
+          <span class="text-xs font-bold text-emerald-600">100% Collected</span>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-6">
+        <!-- Chart -->
+        <div class="lg:col-span-7 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-base font-bold text-slate-900">Weekly Completed Rides</h3>
+          <div class="h-64 flex items-end justify-between gap-3 pt-8 pb-2 px-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end"><div class="w-full bg-amber-500 rounded-t-lg" style="height: 60%"></div><span class="text-xs font-bold text-slate-500">Mon</span></div>
+            <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end"><div class="w-full bg-amber-500 rounded-t-lg" style="height: 85%"></div><span class="text-xs font-bold text-slate-500">Tue</span></div>
+            <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end"><div class="w-full bg-amber-500 rounded-t-lg" style="height: 75%"></div><span class="text-xs font-bold text-slate-500">Wed</span></div>
+            <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end"><div class="w-full bg-amber-500 rounded-t-lg" style="height: 90%"></div><span class="text-xs font-bold text-slate-500">Thu</span></div>
+            <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end"><div class="w-full bg-amber-500 rounded-t-lg" style="height: 95%"></div><span class="text-xs font-bold text-slate-500">Fri</span></div>
+          </div>
+        </div>
+
+        <!-- Fleet Status Table -->
+        <div class="lg:col-span-5 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="text-base font-bold text-slate-900">Fleet Active Status</h3>
+          <div class="space-y-3" id="adminFleetList">
+            <!-- JS Populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+    const fleetData = [
+      { id: "BUS-42", driver: "John Doe", capacity: "40 Seats", status: "Active" },
+      { id: "BUS-18", driver: "Maria Garcia", capacity: "32 Seats", status: "Active" },
+      { id: "BUS-09", driver: "Robert Chen", capacity: "48 Seats", status: "Maintenance" }
+    ];
+
+    window.onload = function() {
+      const container = document.getElementById('adminFleetList');
+      container.innerHTML = fleetData.map(f => `
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-slate-900 text-sm">${f.id} • ${f.driver}</h4>
+            <p class="text-xs text-slate-500">${f.capacity}</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-bold ${f.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'}">
+            ${f.status}
+          </span>
+        </div>
+      `).join('');
+    };
+  </script>
+</body>
+</html>

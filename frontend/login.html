@@ -1,62 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HappyBus | Login</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-    <header>
-        <a href="index.html" class="logo">HappyBus</a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="signup.html">Sign Up</a></li>
-                <li><a href="login.html" class="active">Login</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="login-card">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required placeholder="user@example.com">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Enter password">
-            </div>
-
-            <!-- Remember Me & Forgot Password Row -->
-            <div class="form-options">
-                <label class="remember-me-label">
-                    <input type="checkbox" id="rememberMe" name="rememberMe">
-                    Remember Me
-                </label>
-                <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
-            </div>
-
-            <button type="submit" id="loginBtn">Login</button>
-        </form>
-        <div id="message" style="margin-top: 1rem; font-weight: bold;"></div>
-    </div>
-
-  <script>
-   
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappyBus - Sign In</title>
   
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
+            slate: { 800: '#1e293b', 900: '#0f172a' }
+          }
+        }
+      }
+    }
   </script>
 
-    <footer>
-        <p>&copy; 2026 HappyBus. All rights reserved.</p>
-    </footer>
+  <!-- External Fonts -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
 
+  <!-- External CSS Stylesheet -->
+  <link rel="stylesheet" href="frontend/assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+  
+  <!-- GLOBAL NAVIGATION HEADER PLACEHOLDER -->
+  <div id="header-placeholder"></div>
+
+  <main class="flex-grow py-16">
+    <div class="max-w-md mx-auto px-4">
+      <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
+        <div class="text-center space-y-2">
+          <h2 class="text-3xl font-black text-slate-900">Welcome Back</h2>
+          <p class="text-sm text-slate-500">Select your account type to continue</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-2xl">
+          <button onclick="selectLoginRole('parent')" id="login-role-parent" class="role-btn py-2 text-xs font-bold rounded-xl bg-white shadow text-amber-600 transition">Parent</button>
+          <button onclick="selectLoginRole('driver')" id="login-role-driver" class="role-btn py-2 text-xs font-bold rounded-xl text-slate-600 transition">Driver</button>
+          <button onclick="selectLoginRole('admin')" id="login-role-admin" class="role-btn py-2 text-xs font-bold rounded-xl text-slate-600 transition">Admin</button>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+            <input type="email" id="loginEmail" required value="parent@happybus.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="text-xs font-bold text-slate-700">Password</label>
+              <a href="forgot-password.html" class="text-xs font-bold text-amber-600 hover:underline">Forgot?</a>
+            </div>
+            <input type="password" id="loginPassword" required value="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+          </div>
+          <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition">
+            Sign In to Dashboard
+          </button>
+        </form>
+
+        <div class="pt-4 border-t border-slate-100 space-y-2">
+          <span class="block text-center text-xs font-bold text-slate-400 uppercase">Quick Demo Login</span>
+          <div class="grid grid-cols-3 gap-2">
+            <a href="parent-dashboard.html" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 text-center">Parent</a>
+            <a href="driver-dashboard.html" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 text-center">Driver</a>
+            <a href="admin-dashboard.html" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 text-center">Admin</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 1. Script to load the centralized header dynamically and highlight the active page
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch('header.html');
+        if (!response.ok) throw new Error('Failed to load header.html');
+        
+        const html = await response.text();
+        document.getElementById('header-placeholder').outerHTML = html;
+
+        // Highlight active nav item based on current file name
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-link').forEach(link => {
+          if (link.getAttribute('data-page') === currentPage) {
+            link.className = "nav-link px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+          }
+        });
+
+        // Re-initialize Lucide icons for the injected header
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      } catch (error) {
+        console.error('Error loading navigation header:', error);
+      }
+    });
+
+    // 2. Existing page scripts
+    lucide.createIcons();
+    let currentRole = 'parent';
+
+    function selectLoginRole(role) {
+      currentRole = role;
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.classList.remove('bg-white', 'shadow', 'text-amber-600');
+        btn.classList.add('text-slate-600');
+      });
+      document.getElementById(`login-role-${role}`).classList.add('bg-white', 'shadow', 'text-amber-600');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      window.location.href = `${currentRole}-dashboard.html`;
+    }
+  </script>
 </body>
 </html>
-
-
-
-
