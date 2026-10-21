@@ -1,3 +1,9 @@
+Payment Method
+
+Stripe - https://stripe.com/
+
+
+Database
 Front-End Feature,HTTP Method,API Endpoint,Description
 
 Clerk Auth - https://clerk.com/react-authentication
