@@ -1,3 +1,21 @@
+               ┌──────────────────────────────────────────────┐
+               │              Android App                     │
+               │   (React Native / Flutter / Native Kotlin)   │
+               └──────┬───────────────┬───────────────┬───────┘
+                      │               │               │
+            Authenticates           Queries      Initiates
+               Tokens               Data         Payment
+                      │               │               │
+                      ▼               ▼               ▼
+                 ┌─────────┐    ┌───────────┐   ┌───────────┐
+                 │  Clerk  │    │ Supabase  │   │  Stripe   │
+                 │  Auth   │───►│ Database  │◄──│ Webhooks  │
+                 └─────────┘    └───────────┘   └───────────┘
+               (Passes JWT via     (Verifies       (Updates
+                   Header)         Clerk JWT)     Payment Status)
+
+
+
 Payment Method
 1. Stripe - https://stripe.com/
 
