@@ -26,6 +26,8 @@ Clerk Auth - https://clerk.com/react-authentication
 1. Login / Auth,POST,/api/auth/login,Validates credentials & returns JWT token
 
 Postgresql or Supabase - https://supabase.com
+1. Registration Code, to record used 4 digit code for registration
+
 2. Driver Location,POST / WebSocket,/api/fleet/telemetry,Sends real-time GPS coordinates
 
 3. Parent Live Map,GET / WebSocket,/api/bus/:id/live,Subscribes to bus movement updates
