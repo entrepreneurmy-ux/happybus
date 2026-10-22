@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HappyBus - Sign In</title>
+  <title>HappyBus | Sign In</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -29,6 +29,9 @@
 
   <!-- External CSS Stylesheet -->
   <link rel="stylesheet" href="frontend/assets/css/style.css">
+
+  <!-- Clerk Frontend SDK -->
+  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
   
@@ -40,49 +43,51 @@
       <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
         <div class="text-center space-y-2">
           <h2 class="text-3xl font-black text-slate-900">Welcome Back</h2>
-          <p class="text-sm text-slate-500">Select your account type to continue</p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-2xl">
-          <button onclick="selectLoginRole('parent')" id="login-role-parent" class="role-btn py-2 text-xs font-bold rounded-xl bg-white shadow text-amber-600 transition">Parent</button>
-          <button onclick="selectLoginRole('driver')" id="login-role-driver" class="role-btn py-2 text-xs font-bold rounded-xl text-slate-600 transition">Driver</button>
-          <button onclick="selectLoginRole('admin')" id="login-role-admin" class="role-btn py-2 text-xs font-bold rounded-xl text-slate-600 transition">Admin</button>
+          <p class="text-sm text-slate-500">Sign in to your HappyBus account</p>
         </div>
 
         <form onsubmit="handleLogin(event)" class="space-y-4">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-            <input type="email" id="loginEmail" required value="parent@happybus.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+            <input type="email" id="loginEmail" required placeholder="sarah@example.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
           </div>
           <div>
             <div class="flex justify-between items-center mb-1">
               <label class="text-xs font-bold text-slate-700">Password</label>
               <a href="forgot-password.html" class="text-xs font-bold text-amber-600 hover:underline">Forgot?</a>
             </div>
-            <input type="password" id="loginPassword" required value="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
           </div>
+
+          <!-- Error message container -->
+          <div id="error-message" class="text-xs text-rose-500 font-semibold hidden"></div>
+
           <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition">
-            Sign In to Dashboard
+            Sign In
           </button>
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; line-height: 16px; color: #000000; text-align: center; margin-top: 24px;">
+            Secured by 
+            <span style="font-weight: 500; color: #000000; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 3px; vertical-align: middle;">
+              <!-- Clerk Logo Icon SVG -->
+              <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 14" class="h-3 w-auto">
+                    <ellipse cx="7.889" cy="7" rx="2.187" ry="2.188" fill="currentColor"></ellipse>
+                    <path d="M11.83 12.18a.415.415 0 0 1-.05.64A6.967 6.967 0 0 1 7.888 14a6.967 6.967 0 0 1-3.891-1.18.415.415 0 0 1-.051-.641l1.598-1.6a.473.473 0 0 1 .55-.074 3.92 3.92 0 0 0 1.794.431 3.92 3.92 0 0 0 1.792-.43.473.473 0 0 1 .551.074l1.599 1.598Z" fill="currentColor"></path>
+              </svg>
+              clerk
+            </span>
+          </div>
+          </div>
         </form>
 
-        <div class="pt-4 border-t border-slate-100 space-y-2">
-          <span class="block text-center text-xs font-bold text-slate-400 uppercase">Quick Demo Login</span>
-          <div class="grid grid-cols-3 gap-2">
-            <a href="parent-dashboard.html" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 text-center">Parent</a>
-            <a href="driver-dashboard.html" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 text-center">Driver</a>
-            <a href="admin-dashboard.html" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 text-center">Admin</a>
-          </div>
-        </div>
       </div>
     </div>
   </main>
 
   <script>
-    // 1. Script to load the centralized header dynamically and highlight the active page
+    // 1. Script to load the centralized header dynamically with cache-buster
     document.addEventListener("DOMContentLoaded", async () => {
       try {
-        const response = await fetch('header.html');
+        const response = await fetch('header.html?v=' + new Date().getTime());
         if (!response.ok) throw new Error('Failed to load header.html');
         
         const html = await response.text();
@@ -105,22 +110,54 @@
       }
     });
 
-    // 2. Existing page scripts
-    lucide.createIcons();
-    let currentRole = 'parent';
-
-    function selectLoginRole(role) {
-      currentRole = role;
-      document.querySelectorAll('.role-btn').forEach(btn => {
-        btn.classList.remove('bg-white', 'shadow', 'text-amber-600');
-        btn.classList.add('text-slate-600');
-      });
-      document.getElementById(`login-role-${role}`).classList.add('bg-white', 'shadow', 'text-amber-600');
+    // 2. Initialize Clerk Auth
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
     }
 
-    function handleLogin(e) {
+    window.addEventListener('load', async function () {
+      await window.Clerk.load();
+    });
+
+    async function handleLogin(e) {
       e.preventDefault();
-      window.location.href = `${currentRole}-dashboard.html`;
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const errorDiv = document.getElementById('error-message');
+      
+      errorDiv.classList.add('hidden');
+
+      try {
+        // Authenticate via Clerk sign-in attempt
+        const signInAttempt = await window.Clerk.client.signIn.create({
+          identifier: email,
+          password: password,
+        });
+
+        if (signInAttempt.status === "complete") {
+          await window.Clerk.setActive({ session: signInAttempt.createdSessionId });
+
+          // Retrieve user role from unsafeMetadata and route to the correct dashboard
+          const user = window.Clerk.user;
+          const role = user?.unsafeMetadata?.role || 'parent';
+
+          if (role === 'admin') {
+            window.location.href = 'admin_dashboard.html';
+          } else if (role === 'driver') {
+            window.location.href = 'driver_dashboard.html';
+          } else {
+            window.location.href = 'parent_dashboard.html';
+          }
+        } else {
+          errorDiv.innerText = "Sign in status: " + signInAttempt.status;
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        errorDiv.innerText = err.errors?.[0]?.message || "Invalid email or password.";
+        errorDiv.classList.remove('hidden');
+      }
     }
   </script>
 </body>
