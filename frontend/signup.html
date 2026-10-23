@@ -110,7 +110,7 @@
     </div>
   </main>
 
-  <script>
+<script>
     // 1. Script to load the centralized header dynamically and highlight the active page
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -131,6 +131,16 @@
         // Re-initialize Lucide icons for the injected header
         if (typeof lucide !== 'undefined') {
           lucide.createIcons();
+        }
+
+        // ─── MOBILE MENU TOGGLE ───
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+          menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+          });
         }
       } catch (error) {
         console.error('Error loading navigation header:', error);
@@ -201,7 +211,7 @@
       } catch (err) {
         console.error("Signup error:", err);
         errorDiv.innerText = err.errors?.[0]?.message || "Something went wrong during signup.";
-        errorDiv.classList.remove('hidden');
+        errorDiv.classList.add('hidden');
       }
     }
 
@@ -228,5 +238,6 @@
       }
     }
   </script>
+
 </body>
 </html>

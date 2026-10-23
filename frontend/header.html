@@ -1,12 +1,13 @@
 <!--
-This is the header component of the HappyBus website. 
-It includes the logo, navigation links, and is designed to be sticky at the top of the page.
-The header uses Tailwind CSS for styling and Lucide icons for visual elements.
+This is the updated responsive header component of the HappyBus website. 
+Includes a mobile hamburger menu toggle for small screens using Tailwind CSS and Lucide icons.
 -->
 
 <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
+      
+      <!-- Brand Logo -->
       <a href="index.html" class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-amber-500/20">
           <i data-lucide="bus" class="w-6 h-6 stroke-[2.5]"></i>
@@ -16,6 +17,7 @@ The header uses Tailwind CSS for styling and Lucide icons for visual elements.
         </div>
       </a>
 
+      <!-- Desktop Navigation Links -->
       <nav class="hidden lg:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/80">
         <a href="index.html" class="nav-link px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1.5" data-page="index.html">
           <i data-lucide="home" class="w-3.5 h-3.5"></i> Home
@@ -27,6 +29,27 @@ The header uses Tailwind CSS for styling and Lucide icons for visual elements.
           <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Sign In
         </a>
       </nav>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex lg:hidden">
+        <button id="mobile-menu-button" type="button" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500" aria-label="Toggle Menu">
+          <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+        </button>
+      </div>
+
     </div>
+  </div>
+
+  <!-- Mobile Dropdown Menu (Hidden by default) -->
+  <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1 shadow-lg">
+    <a href="index.html" class="nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600" data-page="index.html">
+      <i data-lucide="home" class="w-4 h-4"></i> Home
+    </a>
+    <a href="signup.html" class="nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600" data-page="signup.html">
+      <i data-lucide="user-plus" class="w-4 h-4"></i> Sign Up
+    </a>
+    <a href="signin.html" class="nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600" data-page="signin.html">
+      <i data-lucide="log-in" class="w-4 h-4"></i> Sign In
+    </a>
   </div>
 </header>

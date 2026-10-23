@@ -159,16 +159,21 @@
     </div>
   </main>
 
-  <script>
-    // 1. Script to load the centralized header dynamically
+<script>
+    // 1. Script to load the centralized header dynamically with robust error checking
     document.addEventListener("DOMContentLoaded", async () => {
       try {
-        // Adjust this path if your header.html is stored inside a specific folder like 'components/header.html'
-        const response = await fetch('header.html');
-        if (!response.ok) throw new Error('Failed to load header.html');
+        const placeholder = document.getElementById('header-placeholder');
+        if (!placeholder) {
+          console.error("CRITICAL: Missing <div id='header-placeholder'></div> in index.html!");
+          return;
+        }
+
+        const response = await fetch('header.html?v=' + new Date().getTime());
+        if (!response.ok) throw new Error('Failed to load header.html (Status: ' + response.status + ')');
         
         const html = await response.text();
-        document.getElementById('header-placeholder').outerHTML = html;
+        placeholder.outerHTML = html;
 
         // Highlight active nav item based on current file name
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -182,13 +187,29 @@
         if (typeof lucide !== 'undefined') {
           lucide.createIcons();
         }
+
+        // ─── MOBILE MENU TOGGLE ───
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+          menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            console.log("Mobile menu toggled successfully!");
+          });
+        } else {
+          console.warn("Warning: #mobile-menu-button or #mobile-menu not found in header.html");
+        }
+
       } catch (error) {
         console.error('Error loading navigation header:', error);
       }
     });
 
     // 2. Existing page scripts
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
     
     function updateCalculator() {
       const count = document.getElementById('calcStudents').value;
@@ -206,5 +227,6 @@
       res.innerText = `Great news! 4 HappyBus active pickup routes serve district zone '${val}'. Passes start at $60/mo.`;
     }
   </script>
+
 </body>
 </html>

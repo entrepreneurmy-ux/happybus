@@ -81,7 +81,7 @@
     </div>
   </main>
 
-  <script>
+<script>
     // 1. Script to load the centralized header dynamically with cache-buster
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -102,6 +102,16 @@
         // Re-initialize Lucide icons for the injected header
         if (typeof lucide !== 'undefined') {
           lucide.createIcons();
+        }
+
+        // ─── MOBILE MENU TOGGLE ───
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+          menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+          });
         }
       } catch (error) {
         console.error('Error loading navigation header:', error);
@@ -163,5 +173,6 @@
       }
     }
   </script>
+
 </body>
 </html>
