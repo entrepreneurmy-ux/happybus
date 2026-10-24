@@ -210,3 +210,12 @@ HappyBus operates on a **Hybrid SaaS + Take-Rate Model**:
 │ Phase 5  │ Telegram Bot Integration & Contingency Panic Handler        │
 └──────────┴─────────────────────────────────────────────────────────────┘
 ```
+
+## 10. Domain Name
+
+```
+Register auralink.my @ exabytes
+
+
+
+```
