@@ -166,3 +166,55 @@ HappyBus operates on a **Hybrid SaaS + Take-Rate Model**:
 │ Phase 5  │ Telegram Bot Integration & Contingency Panic Handler        │
 └──────────┴─────────────────────────────────────────────────────────────┘
 ```
+
+# System Architecture & API Specification
+
+## 1. System Architecture Diagram
+
+```
+               ┌──────────────────────────────────────────────┐
+               │              Android App                     │
+               │   (React Native / Flutter / Native Kotlin)   │
+               └──────┬───────────────┬───────────────┬───────┘
+                      │               │               │
+            Authenticates           Queries         Initiates
+               Tokens                Data            Payment
+                      │               │               │
+                      ▼               ▼               ▼
+                 ┌─────────┐     ┌───────────┐   ┌───────────┐
+                 │  Clerk  │     │ Supabase  │   │  Stripe   │
+                 │  Auth   │────►│ Database  │◄──│ Webhooks  │
+                 └─────────┘     └───────────┘   └───────────┘
+               (Passes JWT via     (Verifies       (Updates
+                   Header)         Clerk JWT)    Payment Status)
+```
+
+---
+
+## 2. Integrated Services & Third-Party Providers
+
+* **Authentication Provider:** [Clerk Auth](https://clerk.com/react-authentication)
+* **Database & Realtime Backend:** [Supabase / PostgreSQL](https://supabase.com)
+* **Payment Gateway:** [Stripe](https://stripe.com/)
+
+---
+
+## 3. API Endpoints & Feature Mapping
+
+### 3.1 Authentication (Clerk)
+
+| # | Front-End Feature | HTTP Method | API Endpoint | Description |
+|---|-------------------|-------------|--------------|-------------|
+| 1 | Login / Auth | `POST` | `/api/auth/login` | Validates credentials & returns JWT token |
+
+---
+
+### 3.2 Backend Services & Database (Supabase / PostgreSQL)
+
+| # | Front-End Feature | HTTP Method | API Endpoint | Description |
+|---|-------------------|-------------|--------------|-------------|
+| 1 | Registration Code | `POST` | `/api/auth/registration-code` | Records and verifies used 4-digit code for registration |
+| 2 | Driver Location | `POST` / `WebSocket` | `/api/fleet/telemetry` | Sends real-time GPS coordinates |
+| 3 | Parent Live Map | `GET` / `WebSocket` | `/api/bus/:id/live` | Subscribes to bus movement updates |
+| 4 | Student Roster | `PATCH` | `/api/students/:id/status` | Toggles student `boarded`/`dropped_off` status |
+| 5 | Admin Route Add | `POST` | `/api/routes` | Saves a newly created route |
