@@ -214,8 +214,9 @@ HappyBus operates on a **Hybrid SaaS + Take-Rate Model**:
 ## 10. Notes
 
 ```
-Register auralink.my @ exabytes
-Whatsapp enable - WA-AK
+Register - auralink.my @ exabytes
+Whatsapp - enable - WA-AK
+Route Scheduling - OR-Tool
 
 
 ```

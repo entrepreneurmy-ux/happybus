@@ -3,7 +3,10 @@
    Path: frontend/assets/css/style.css
    ========================================================================== */
 
-/* 1. Design Tokens & CSS Variables
+/* 1. Global External Font Import (Must be at the very top) */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* 2. Design Tokens & CSS Variables
    Modify these variables to easily customize theme colors & styles across pages. */
 :root {
   /* Brand Accent Colors (Amber) */
@@ -32,17 +35,9 @@
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* 2. Global External Font Import */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
 /* 3. Global Base Reset Adjustments */
-html {
-  font-family: var(--font-sans);
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: var(--font-sans);
+html, body {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
 /* 4. Modular Custom Classes & Utilities */

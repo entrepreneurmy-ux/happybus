@@ -21,17 +21,12 @@
     }
   </script>
 
-  <!-- External Fonts -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-  </style>
-
   <!-- External CSS Stylesheet -->
-  <link rel="stylesheet" href="frontend/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- Clerk Frontend SDK -->
-  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk"></script>
+  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk">
+  </script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
   
@@ -156,11 +151,11 @@
           const role = user?.unsafeMetadata?.role || 'parent';
 
           if (role === 'admin') {
-            window.location.href = 'admin_dashboard.html';
+            window.location.href = 'admin-dashboard.html';
           } else if (role === 'driver') {
-            window.location.href = 'driver_dashboard.html';
+            window.location.href = 'driver-dashboard.html';
           } else {
-            window.location.href = 'parent_dashboard.html';
+            window.location.href = 'parent-dashboard.html';
           }
         } else {
           errorDiv.innerText = "Sign in status: " + signInAttempt.status;
