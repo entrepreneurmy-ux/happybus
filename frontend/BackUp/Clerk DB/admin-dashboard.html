@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappyBus | Admin</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
+            slate: { 800: '#1e293b', 900: '#0f172a' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- External CSS Stylesheet -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Clerk Frontend SDK -->
+  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- GLOBAL NAVIGATION HEADER PLACEHOLDER -->
+  <div id="header-placeholder"></div>
+
+  <!-- Layout Container with Sidebar and Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow flex flex-col md:flex-row gap-8">
+    
+    <!-- Left Sidebar Navigation -->
+    <aside class="w-full md:w-64 flex-shrink-0">
+      <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm sticky top-24 space-y-2">
+        <div class="px-3 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
+          Admin Dashboard
+        </div>
+        <nav class="space-y-1">
+          <!-- Overview (Active Tab) -->
+          <a href="#overview" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs shadow-sm transition">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>Overview</span>
+          </a>
+
+          <!-- Routes & Schedule -->
+          <a href="#routes-schedule" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold text-xs transition">
+            <i data-lucide="calendar-range" class="w-4 h-4"></i>
+            <span>Routes & Schedule</span>
+          </a>
+
+          <!-- Driver & Fleet -->
+          <a href="#driver-fleet" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold text-xs transition">
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span>Driver & Fleet</span>
+          </a>
+
+          <!-- Student Detail -->
+          <a href="#student-detail" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold text-xs transition">
+            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+            <span>Student Detail</span>
+          </a>
+
+          <!-- Live GPS -->
+          <a href="#live-gps" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold text-xs transition">
+            <i data-lucide="map-pin" class="w-4 h-4"></i>
+            <span>Live GPS</span>
+          </a>
+
+          <!-- Payment & Revenue -->
+          <a href="#payment-revenue" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold text-xs transition">
+            <i data-lucide="credit-card" class="w-4 h-4"></i>
+            <span>Payment & Revenue</span>
+          </a>
+
+          <!-- Setting -->
+          <a href="#setting" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold text-xs transition">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+            <span>Setting</span>
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Main Content Area: Executive Command Center -->
+    <main class="flex-grow space-y-6 min-w-0">
+
+      <!-- Page Banner Header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 class="text-2xl font-black text-slate-900">Executive Command Center</h2>
+          <p class="text-xs font-bold text-slate-500">Live operational oversight & business performance summary</p>
+        </div>
+        <button onclick="alert('Dispatch Broadcast Alert')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center gap-2">
+          <i data-lucide="radio" class="w-4 h-4"></i> Broadcast Fleet Alert
+        </button>
+      </div>
+
+      <!-- 1. Quick KPI Summary -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">Total Active Students</span>
+          <div class="text-3xl font-black text-slate-900">1,248</div>
+          <span class="text-xs font-bold text-emerald-600">↑ +12% this month</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">Monthly Revenue</span>
+          <div class="text-3xl font-black text-slate-900">$74,880</div>
+          <span class="text-xs font-bold text-emerald-600">100% Collected</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">Avg On-Time Arrival</span>
+          <div class="text-3xl font-black text-slate-900">98.2%</div>
+          <span class="text-xs font-bold text-emerald-600">Target &gt;95%</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-xs font-bold text-slate-400 uppercase">Fleet Health Score</span>
+          <div class="text-3xl font-black text-slate-900">91 / 100</div>
+          <span class="text-xs font-bold text-amber-600">3 Vehicles Scheduled Repair</span>
+        </div>
+      </div>
+
+      <!-- 2. Live Fleet Status Overview -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Live Fleet Status Overview</h3>
+            <p class="text-xs text-slate-500 font-medium">Real-time availability breakdown across 35 fleet vehicles</p>
+          </div>
+          <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">35 Total Vehicles</span>
+        </div>
+
+        <!-- Segmented Status Bar -->
+        <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden flex">
+          <div class="bg-emerald-500 h-full" style="width: 74%" title="26 Active"></div>
+          <div class="bg-amber-400 h-full" style="width: 17%" title="6 Idle"></div>
+          <div class="bg-rose-500 h-full" style="width: 9%" title="3 Maintenance"></div>
+        </div>
+
+        <!-- Fleet Breakdown Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-emerald-700 uppercase">Active Buses</span>
+              <div class="text-2xl font-black text-emerald-950">26</div>
+              <p class="text-xs text-emerald-600">Currently on route</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+              <i data-lucide="bus" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="p-4 bg-amber-50 rounded-2xl border border-amber-100 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-amber-700 uppercase">Idle Buses</span>
+              <div class="text-2xl font-black text-amber-950">6</div>
+              <p class="text-xs text-amber-600">Standby at depot</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600">
+              <i data-lucide="parking-circle" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="p-4 bg-rose-50 rounded-2xl border border-rose-100 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-rose-700 uppercase">Under Maintenance</span>
+              <div class="text-2xl font-black text-rose-950">3</div>
+              <p class="text-xs text-rose-600">Depot service shop</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-600">
+              <i data-lucide="wrench" class="w-5 h-5"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Today's Ride Completion & 4. Safety Alert Feed -->
+      <div class="grid lg:grid-cols-12 gap-6">
+        
+        <!-- Today's Ride Completion Rate -->
+        <div class="lg:col-span-6 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-900">Today’s Ride Completion Rate</h3>
+            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">On Schedule</span>
+          </div>
+
+          <!-- Morning Pick-up Progress -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
+            <div class="flex justify-between items-center text-xs font-bold">
+              <span class="text-slate-700 flex items-center gap-1.5">
+                <i data-lucide="sun" class="w-4 h-4 text-amber-500"></i> Morning Pickup Shift
+              </span>
+              <span class="text-slate-900">100% Completed</span>
+            </div>
+            <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+              <div class="bg-amber-500 h-full rounded-full" style="width: 100%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500 font-medium">
+              <span>35 / 35 Routes Completed</span>
+              <span>1,248 Students Delivered</span>
+            </div>
+          </div>
+
+          <!-- Afternoon Drop-off Progress -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
+            <div class="flex justify-between items-center text-xs font-bold">
+              <span class="text-slate-700 flex items-center gap-1.5">
+                <i data-lucide="moon-star" class="w-4 h-4 text-slate-600"></i> Afternoon Drop-off Shift
+              </span>
+              <span class="text-amber-600">65% In Progress</span>
+            </div>
+            <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+              <div class="bg-amber-500 h-full rounded-full" style="width: 65%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500 font-medium">
+              <span>23 / 35 Routes Completed</span>
+              <span>811 / 1,248 Students Home</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Safety Alert Feed -->
+        <div class="lg:col-span-6 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-900">Safety Alert Feed</h3>
+            <span class="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-full">3 Active Flags</span>
+          </div>
+
+          <div class="space-y-3" id="safetyAlertList">
+            <!-- Alert Item 1: Speeding -->
+            <div class="p-3 bg-rose-50 rounded-2xl border border-rose-100 flex items-start gap-3">
+              <div class="p-2 bg-rose-100 text-rose-700 rounded-xl flex-shrink-0 mt-0.5">
+                <i data-lucide="gauge" class="w-4 h-4"></i>
+              </div>
+              <div class="flex-grow min-w-0">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-slate-900 text-xs">Speeding Detected (BUS-12)</h4>
+                  <span class="text-[10px] font-bold text-slate-400">4 mins ago</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Exceeded limit: 68 km/h in 50 km/h school zone (Driver: Mark Vance)</p>
+              </div>
+            </div>
+
+            <!-- Alert Item 2: Sudden Braking -->
+            <div class="p-3 bg-amber-50 rounded-2xl border border-amber-100 flex items-start gap-3">
+              <div class="p-2 bg-amber-100 text-amber-700 rounded-xl flex-shrink-0 mt-0.5">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+              </div>
+              <div class="flex-grow min-w-0">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-slate-900 text-xs">Sudden Braking (BUS-07)</h4>
+                  <span class="text-[10px] font-bold text-slate-400">18 mins ago</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Harsh deceleration recorded at Pine St. intersection (Driver: Sarah Jenkins)</p>
+              </div>
+            </div>
+
+            <!-- Alert Item 3: Off-Route Deviation -->
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-start gap-3">
+              <div class="p-2 bg-slate-200 text-slate-700 rounded-xl flex-shrink-0 mt-0.5">
+                <i data-lucide="navigation" class="w-4 h-4"></i>
+              </div>
+              <div class="flex-grow min-w-0">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-slate-900 text-xs">Off-Route Deviation (BUS-21)</h4>
+                  <span class="text-[10px] font-bold text-slate-400">32 mins ago</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Bus diverted 1.2 km off designated route due to road work on 5th Ave.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // 1. Script to load the centralized header dynamically with cache-buster
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch('signout-header.html?v=' + new Date().getTime());
+        if (!response.ok) throw new Error('Failed to load signout-header.html');
+        
+        const html = await response.text();
+        document.getElementById('header-placeholder').outerHTML = html;
+
+        // Highlight active nav item based on current file name
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-link').forEach(link => {
+          if (link.getAttribute('data-page') === currentPage) {
+            link.className = "nav-link px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+          }
+        });
+
+        // Re-initialize Lucide icons for the injected header
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+        
+        // ─── MOBILE MENU TOGGLE ───
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+          menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+          });
+        }
+      } catch (error) {
+        console.error('Error loading navigation header:', error);
+      }
+    });
+        
+    lucide.createIcons();
+
+    window.addEventListener('load', async function () {
+      await window.Clerk.load();
+
+      // Optional: Protect route — redirect to signin if no session is found
+      if (!window.Clerk.session) {
+        window.location.href = 'signin.html';
+        return;
+      }
+    });
+
+    async function handleSignOut() {
+      await window.Clerk.signOut();
+      window.location.href = 'signin.html';
+    }
+  </script>
+</body>
+</html>

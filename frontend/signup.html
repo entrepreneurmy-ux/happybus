@@ -24,8 +24,8 @@
   <!-- External CSS Stylesheet -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Clerk Frontend SDK -->
-  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk"></script>  
+  <!-- Supabase JS Client SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
 
@@ -73,7 +73,7 @@
             </div>
           </div>
 
-          <!-- Hidden Verification Code Section (reveals dynamically if email verification is enabled in Clerk) -->
+          <!-- Hidden Verification Code Section -->
           <div id="verification-section" class="space-y-3 hidden">
             <label class="block text-xs font-bold text-slate-700">Enter Verification Code sent to your Email</label>
             <input type="text" id="verificationCode" placeholder="123456" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
@@ -89,15 +89,11 @@
             Sign Up
           </button>
           
-          <!-- Clerk Authorization Badge -->
-          <a href="https://clerk.com/legal/standard-terms" target="_blank" rel="noopener noreferrer" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #4b5563; text-align: center; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+          <!-- Supabase Authorization Badge -->
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #4b5563; text-align: center; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 6px;">
             <span>Secured by</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px; color: #111827; font-size: 16px; font-weight: 700;">
-              <!-- Local SVG File Reference -->
-              <img src="/assets/svg/symbol-dark.svg" alt="Clerk logo" style="height: 16px; width: auto; vertical-align: middle;" />
-              clerk
-            </span>
-          </a>
+            <span style="color: #111827; font-size: 15px; font-weight: 700;">Supabase Auth</span>
+          </div>
 
         </form>
       </div>
@@ -105,6 +101,13 @@
   </main>
 
 <script>
+    // ── SUPABASE CONFIGURATION ──
+    const SUPABASE_URL = 'https://ywxonjofkzmkkckaxerj.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3eG9uam9ma3pta2tja2F4ZXJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxODg2ODEsImV4cCI6MjEwODc2NDY4MX0.e37iyecmg1J0vxNKmfUiav3hDKXVkCwPS-cpceP1Uck';
+    
+    // Initialize Supabase Client safely
+    const supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     // 1. Script to load the centralized header dynamically and highlight the active page
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -112,7 +115,10 @@
         if (!response.ok) throw new Error('Failed to load header.html');
         
         const html = await response.text();
-        document.getElementById('header-placeholder').outerHTML = html;
+        const placeholder = document.getElementById('header-placeholder');
+        if (placeholder) {
+          placeholder.innerHTML = html;
+        }
 
         // Highlight active nav item based on current file name
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -141,14 +147,9 @@
       }
     });
 
-    // 2. Clerk Authentication Setup
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
-
-    window.addEventListener('load', async function () {
-      await window.Clerk.load();
-    });
 
     function checkPasswordStrength() {
       const val = document.getElementById('signupPass').value;
@@ -172,9 +173,9 @@
     async function handleSignup(e) {
       e.preventDefault();
       
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const email = document.getElementById('email').value;
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
       const invitationCode = document.getElementById('invitationCode').value.trim().toUpperCase();
       const password = document.getElementById('signupPass').value;
       const errorDiv = document.getElementById('error-message');
@@ -182,52 +183,67 @@
       errorDiv.classList.add('hidden');
 
       try {
-        const signUpAttempt = await window.Clerk.client.signUp.create({
-          emailAddress: email,
+        const { data, error } = await supabaseApp.auth.signUp({
+          email: email,
           password: password,
-          firstName: firstName,
-          lastName: lastName,
-          unsafeMetadata: { 
-            invitation_code: invitationCode // Sent to FastAPI webhook for validation
+          options: {
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+              invitation_code: invitationCode
+            },
+            emailRedirectTo: `${window.location.origin}/parent_dashboard.html`
           }
         });
 
-        if (signUpAttempt.status === "complete") {
-          await window.Clerk.setActive({ session: signUpAttempt.createdSessionId });
+        if (error) {
+          errorDiv.innerText = error.message;
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+
+        // If email confirmation is disabled, data.session will exist immediately
+        if (data.session) {
           window.location.href = 'parent_dashboard.html';
-        } else if (signUpAttempt.status === "missing_requirements") {
+        } else {
+          errorDiv.className = "text-xs text-emerald-600 font-semibold";
+          errorDiv.innerText = "Account created! Please check your email for the verification code.";
+          errorDiv.classList.remove('hidden');
+
           document.getElementById('verification-section').classList.remove('hidden');
           document.getElementById('submitBtn').classList.add('hidden');
-        } else {
-          errorDiv.innerText = "Status: " + signUpAttempt.status;
-          errorDiv.classList.remove('hidden');
         }
       } catch (err) {
         console.error("Signup error:", err);
-        errorDiv.innerText = err.errors?.[0]?.message || "Something went wrong during signup.";
-        errorDiv.classList.add('hidden');
+        errorDiv.className = "text-xs text-rose-500 font-semibold";
+        errorDiv.innerText = "Something went wrong during signup.";
+        errorDiv.classList.remove('hidden');
       }
     }
 
     async function verifyEmail() {
-      const code = document.getElementById('verificationCode').value;
+      const email = document.getElementById('email').value.trim();
+      const code = document.getElementById('verificationCode').value.trim();
       const errorDiv = document.getElementById('error-message');
 
       try {
-        const completeSignUp = await window.Clerk.client.signUp.attemptEmailAddressVerification({
-          code: code,
+        const { data, error } = await supabaseApp.auth.verifyOtp({
+          email: email,
+          token: code,
+          type: 'signup'
         });
 
-        if (completeSignUp.status === "complete") {
-          await window.Clerk.setActive({ session: completeSignUp.createdSessionId });
-          window.location.href = 'parent_dashboard.html';
-        } else {
-          errorDiv.innerText = "Verification failed. Please check the code.";
+        if (error) {
+          errorDiv.className = "text-xs text-rose-500 font-semibold";
+          errorDiv.innerText = error.message;
           errorDiv.classList.remove('hidden');
+        } else {
+          window.location.href = 'parent_dashboard.html';
         }
       } catch (err) {
         console.error("Verification error:", err);
-        errorDiv.innerText = err.errors?.[0]?.message || "Invalid verification code.";
+        errorDiv.className = "text-xs text-rose-500 font-semibold";
+        errorDiv.innerText = "Invalid verification code.";
         errorDiv.classList.remove('hidden');
       }
     }

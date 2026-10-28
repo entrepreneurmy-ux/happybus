@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappyBus | Sign Up</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
+            slate: { 800: '#1e293b', 900: '#0f172a' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- External CSS Stylesheet -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Clerk Frontend SDK -->
+  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk"></script>  
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- GLOBAL NAVIGATION HEADER PLACEHOLDER -->
+  <div id="header-placeholder"></div>
+
+  <main class="flex-grow py-16">
+    <div class="max-w-lg mx-auto px-4">
+      <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
+        <div class="text-center space-y-2">
+          <h2 class="text-3xl font-black text-slate-900">Create Account</h2>
+          <p class="text-sm text-slate-500">Enter your details and invitation code to get started</p>
+        </div>
+
+        <form onsubmit="handleSignup(event)" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">First Name</label>
+              <input type="text" id="firstName" required placeholder="Alex" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Last Name</label>
+              <input type="text" id="lastName" required placeholder="Tan" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+            <input type="email" id="email" required placeholder="alextan@example.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Invitation Code</label>
+            <input type="text" id="invitationCode" required maxlength="7" placeholder="1234" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm uppercase tracking-widest font-bold outline-none focus:border-amber-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Create Password</label>
+            <input type="password" id="signupPass" oninput="checkPasswordStrength()" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+            <div class="mt-2 flex items-center gap-2">
+              <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div id="strengthBar" class="h-full bg-slate-300 w-0 transition-all"></div>
+              </div>
+              <span id="strengthText" class="text-xs font-bold text-slate-400">Weak</span>
+            </div>
+          </div>
+
+          <!-- Hidden Verification Code Section (reveals dynamically if email verification is enabled in Clerk) -->
+          <div id="verification-section" class="space-y-3 hidden">
+            <label class="block text-xs font-bold text-slate-700">Enter Verification Code sent to your Email</label>
+            <input type="text" id="verificationCode" placeholder="123456" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+            <button type="button" onclick="verifyEmail()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition">
+              Verify & Complete
+            </button>
+          </div>
+
+          <!-- Error message container -->
+          <div id="error-message" class="text-xs text-rose-500 font-semibold hidden"></div>
+
+          <button type="submit" id="submitBtn" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition">
+            Sign Up
+          </button>
+          
+          <!-- Clerk Authorization Badge -->
+          <a href="https://clerk.com/legal/standard-terms" target="_blank" rel="noopener noreferrer" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #4b5563; text-align: center; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+            <span>Secured by</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px; color: #111827; font-size: 16px; font-weight: 700;">
+              <!-- Local SVG File Reference -->
+              <img src="/assets/svg/symbol-dark.svg" alt="Clerk logo" style="height: 16px; width: auto; vertical-align: middle;" />
+              clerk
+            </span>
+          </a>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+<script>
+    // 1. Script to load the centralized header dynamically and highlight the active page
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch('header.html');
+        if (!response.ok) throw new Error('Failed to load header.html');
+        
+        const html = await response.text();
+        document.getElementById('header-placeholder').outerHTML = html;
+
+        // Highlight active nav item based on current file name
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-link').forEach(link => {
+          if (link.getAttribute('data-page') === currentPage) {
+            link.className = "nav-link px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+          }
+        });
+
+        // Re-initialize Lucide icons for the injected header
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+
+        // ─── MOBILE MENU TOGGLE ───
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+          menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+          });
+        }
+      } catch (error) {
+        console.error('Error loading navigation header:', error);
+      }
+    });
+
+    // 2. Clerk Authentication Setup
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+
+    window.addEventListener('load', async function () {
+      await window.Clerk.load();
+    });
+
+    function checkPasswordStrength() {
+      const val = document.getElementById('signupPass').value;
+      const bar = document.getElementById('strengthBar');
+      const txt = document.getElementById('strengthText');
+      if (val.length > 8) {
+        bar.style.width = '100%';
+        bar.className = 'h-full bg-emerald-500 transition-all';
+        txt.innerText = 'Strong';
+      } else if (val.length > 4) {
+        bar.style.width = '50%';
+        bar.className = 'h-full bg-amber-500 transition-all';
+        txt.innerText = 'Medium';
+      } else {
+        bar.style.width = '20%';
+        bar.className = 'h-full bg-rose-500 transition-all';
+        txt.innerText = 'Weak';
+      }
+    }
+
+    async function handleSignup(e) {
+      e.preventDefault();
+      
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const invitationCode = document.getElementById('invitationCode').value.trim().toUpperCase();
+      const password = document.getElementById('signupPass').value;
+      const errorDiv = document.getElementById('error-message');
+      
+      errorDiv.classList.add('hidden');
+
+      try {
+        const signUpAttempt = await window.Clerk.client.signUp.create({
+          emailAddress: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+          unsafeMetadata: { 
+            invitation_code: invitationCode // Sent to FastAPI webhook for validation
+          }
+        });
+
+        if (signUpAttempt.status === "complete") {
+          await window.Clerk.setActive({ session: signUpAttempt.createdSessionId });
+          window.location.href = 'parent_dashboard.html';
+        } else if (signUpAttempt.status === "missing_requirements") {
+          document.getElementById('verification-section').classList.remove('hidden');
+          document.getElementById('submitBtn').classList.add('hidden');
+        } else {
+          errorDiv.innerText = "Status: " + signUpAttempt.status;
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error("Signup error:", err);
+        errorDiv.innerText = err.errors?.[0]?.message || "Something went wrong during signup.";
+        errorDiv.classList.add('hidden');
+      }
+    }
+
+    async function verifyEmail() {
+      const code = document.getElementById('verificationCode').value;
+      const errorDiv = document.getElementById('error-message');
+
+      try {
+        const completeSignUp = await window.Clerk.client.signUp.attemptEmailAddressVerification({
+          code: code,
+        });
+
+        if (completeSignUp.status === "complete") {
+          await window.Clerk.setActive({ session: completeSignUp.createdSessionId });
+          window.location.href = 'parent_dashboard.html';
+        } else {
+          errorDiv.innerText = "Verification failed. Please check the code.";
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error("Verification error:", err);
+        errorDiv.innerText = err.errors?.[0]?.message || "Invalid verification code.";
+        errorDiv.classList.remove('hidden');
+      }
+    }
+  </script>
+
+</body>
+</html>

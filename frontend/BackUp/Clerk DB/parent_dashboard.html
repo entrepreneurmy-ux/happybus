@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappyBus - Parent Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
+            slate: { 800: '#1e293b', 900: '#0f172a' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-amber-500/20">
+            <i data-lucide="bus" class="w-6 h-6 stroke-[2.5]"></i>
+          </div>
+          <span class="text-xl font-extrabold tracking-tight text-slate-900">Happy<span class="text-amber-500">Bus</span></span>
+        </a>
+        <div class="flex items-center gap-3">
+          <a href="signin.html" class="text-xs font-bold text-slate-500 hover:text-slate-800">Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow py-8 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+      <!-- Welcome Banner -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div class="flex items-center gap-4">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" class="w-14 h-14 rounded-2xl object-cover border-2 border-amber-500">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">Good morning, Sarah!</h2>
+            <p class="text-xs text-slate-500 font-bold">Child: Leo Jenkins • Grade 3B • Oakridge Elementary</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> On Board Bus #42
+          </span>
+          <button onclick="openDriverModal()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-sm flex items-center gap-2">
+            <i data-lucide="phone" class="w-4 h-4"></i> Contact Driver
+          </button>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-6">
+        <!-- Live Route Map -->
+        <div class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900">Live Route Tracker</h3>
+              <p class="text-xs text-slate-500">Bus #42 • Route Red-A</p>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl text-right">
+              <span class="text-xs font-bold text-amber-800 block">ESTIMATED ARRIVAL</span>
+              <span class="text-lg font-black text-amber-600">08 Mins 42 Secs</span>
+            </div>
+          </div>
+
+          <div class="relative w-full h-[360px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-inner">
+            <canvas id="parentMapCanvas" class="w-full h-full block"></canvas>
+            <div class="absolute bottom-4 left-4 bg-slate-900/90 text-white p-3 rounded-xl border border-slate-700 text-xs space-y-1">
+              <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Current Bus Position</div>
+              <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Home Stop (Drop point)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Timeline -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+            <h3 class="text-md font-bold text-slate-900">Today's Timeline</h3>
+            <div class="space-y-4 relative pl-4 border-l-2 border-slate-100">
+              <div class="relative">
+                <span class="absolute -left-[21px] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500"></span>
+                <div class="text-xs font-bold text-slate-900">07:45 AM • Boarded Bus</div>
+                <p class="text-xs text-slate-500">Badge tapped by Leo at Morning Stop #3</p>
+              </div>
+              <div class="relative">
+                <span class="absolute -left-[21px] top-1 w-3.5 h-3.5 rounded-full bg-amber-500 animate-pulse"></span>
+                <div class="text-xs font-bold text-amber-600">En Route to School</div>
+                <p class="text-xs text-slate-500">Currently passing Maple Street</p>
+              </div>
+              <div class="relative opacity-40">
+                <span class="absolute -left-[21px] top-1 w-3.5 h-3.5 rounded-full bg-slate-300"></span>
+                <div class="text-xs font-bold text-slate-700">08:15 AM • Expected Drop</div>
+                <p class="text-xs text-slate-500">Oakridge Main Gate</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 rounded-3xl p-6 shadow-md space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Pass Renewal</span>
+              <span class="bg-slate-950 text-white text-xs px-2.5 py-1 rounded-full font-bold">12 Days Left</span>
+            </div>
+            <h4 class="text-lg font-black">Monthly Pass Auto-Renewal</h4>
+            <button onclick="alert('Bus pass auto-renewed successfully!')" class="w-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold py-3 rounded-xl transition">
+              Renew Pass ($60/mo)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Driver Contact Overlay -->
+  <div id="driverContactModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 border border-slate-200 shadow-2xl">
+      <div class="flex justify-between items-center">
+        <h3 class="font-black text-slate-900">Driver Contact</h3>
+        <button onclick="closeDriverModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="text-center space-y-2">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120" class="w-16 h-16 rounded-full mx-auto object-cover border-2 border-amber-500">
+        <h4 class="font-bold text-slate-900">John Doe (Bus #42)</h4>
+        <p class="text-xs text-slate-500">Route Red-A Driver</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <a href="tel:5550199" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl text-xs text-center block">Call Driver</a>
+        <button onclick="alert('Message sent!')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 rounded-xl text-xs">Send SMS</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    let busCanvas, busCtx, busPosition = 0;
+
+    window.onload = function() {
+      busCanvas = document.getElementById('parentMapCanvas');
+      if (busCanvas) {
+        busCtx = busCanvas.getContext('2d');
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        animateMap();
+      }
+    };
+
+    function resizeCanvas() {
+      if (!busCanvas) return;
+      busCanvas.width = busCanvas.offsetWidth;
+      busCanvas.height = busCanvas.offsetHeight;
+    }
+
+    function animateMap() {
+      if (!busCtx) return;
+      busCtx.clearRect(0, 0, busCanvas.width, busCanvas.height);
+      const w = busCanvas.width, h = busCanvas.height;
+
+      busCtx.beginPath();
+      busCtx.moveTo(w * 0.1, h * 0.5);
+      busCtx.bezierCurveTo(w * 0.3, h * 0.2, w * 0.7, h * 0.8, w * 0.9, h * 0.5);
+      busCtx.strokeStyle = '#f59e0b';
+      busCtx.lineWidth = 6;
+      busCtx.stroke();
+
+      busPosition = (busPosition + 0.002) % 1;
+      const busX = w * (0.1 + busPosition * 0.8);
+      const busY = h * (0.5 + Math.sin(busPosition * Math.PI * 2) * 0.2);
+
+      busCtx.beginPath();
+      busCtx.arc(busX, busY, 12, 0, Math.PI * 2);
+      busCtx.fillStyle = '#f59e0b';
+      busCtx.fill();
+      busCtx.strokeStyle = '#ffffff';
+      busCtx.lineWidth = 3;
+      busCtx.stroke();
+
+      requestAnimationFrame(animateMap);
+    }
+
+    function openDriverModal() { document.getElementById('driverContactModal').classList.remove('hidden'); }
+    function closeDriverModal() { document.getElementById('driverContactModal').classList.add('hidden'); }
+  </script>
+</body>
+</html>
