@@ -40,7 +40,7 @@
       <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
         <div class="text-center space-y-2">
           <h2 class="text-3xl font-black text-slate-900">Create Account</h2>
-          <p class="text-sm text-slate-500">Enter your details and invitation code to get started</p>
+          <p class="text-sm text-slate-500">Enter your details and pre-registered phone number</p>
         </div>
 
         <form onsubmit="handleSignup(event)" class="space-y-4">
@@ -61,8 +61,9 @@
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Invitation Code</label>
-            <input type="text" id="invitationCode" required maxlength="7" placeholder="1234" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm uppercase tracking-widest font-bold outline-none focus:border-amber-500">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number (Pre-registered by Operator)</label>
+            <input type="tel" id="phoneNumber" required placeholder="0123456789" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-amber-500">
+            <p class="text-[10px] text-slate-400 mt-1">Enter your mobile number as registered by the operator (e.g., 0123456789)</p>
           </div>
 
           <div>
@@ -104,17 +105,14 @@
   </main>
 
 <script>
-    // 1. Script to load the centralized header dynamically and highlight the active page
+    // 1. Script to load the centralized header dynamically with cache-buster
     document.addEventListener("DOMContentLoaded", async () => {
       try {
-        const response = await fetch('header.html');
+        const response = await fetch('header.html?v=' + new Date().getTime());
         if (!response.ok) throw new Error('Failed to load header.html');
         
         const html = await response.text();
-        const placeholder = document.getElementById('header-placeholder');
-        if (placeholder) {
-          placeholder.innerHTML = html;
-        }
+        document.getElementById('header-placeholder').outerHTML = html;
 
         // Highlight active nav item based on current file name
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -172,28 +170,42 @@
       const firstName = document.getElementById('firstName').value.trim();
       const lastName = document.getElementById('lastName').value.trim();
       const email = document.getElementById('email').value.trim();
-      const invitationCode = document.getElementById('invitationCode').value.trim().toUpperCase();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
       const password = document.getElementById('signupPass').value;
       const errorDiv = document.getElementById('error-message');
       
       errorDiv.classList.add('hidden');
 
       try {
-        // Uses the global 'supabaseClient' instance from supabase-client.js
+        // 1. Verify if the phone number exists in the profiles table (pre-registered by operator)
+        const { data: existingProfiles, error: queryError } = await supabaseClient
+          .from('profiles')
+          .select('id, phone')
+          .eq('phone', phoneNumber);
+
+        if (queryError || !existingProfiles || existingProfiles.length === 0) {
+          errorDiv.className = "text-xs text-rose-500 font-semibold";
+          errorDiv.innerText = "This phone number is not pre-registered by your bus operator. Please contact support.";
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+
+        // 2. Proceed with Supabase sign up if phone is verified
         const { data, error } = await supabaseClient.auth.signUp({
           email: email,
           password: password,
           options: {
             data: {
-              first_name: firstName,
-              last_name: lastName,
-              invitation_code: invitationCode
+              full_name: `${firstName} ${lastName}`,
+              phone: phoneNumber,
+              role: 'parent'
             },
             emailRedirectTo: `${window.location.origin}/parent-dashboard.html`
           }
         });
 
         if (error) {
+          errorDiv.className = "text-xs text-rose-500 font-semibold";
           errorDiv.innerText = error.message;
           errorDiv.classList.remove('hidden');
           return;
@@ -214,7 +226,7 @@
         console.error("Signup error:", err);
         errorDiv.className = "text-xs text-rose-500 font-semibold";
         errorDiv.innerText = "Something went wrong during signup.";
-        errorDiv.classList.add('hidden');
+        errorDiv.classList.remove('hidden');
       }
     }
 
@@ -224,7 +236,6 @@
       const errorDiv = document.getElementById('error-message');
 
       try {
-        // Updated to use supabaseClient consistently
         const { data, error } = await supabaseClient.auth.verifyOtp({
           email: email,
           token: code,
@@ -242,7 +253,7 @@
         console.error("Verification error:", err);
         errorDiv.className = "text-xs text-rose-500 font-semibold";
         errorDiv.innerText = "Invalid verification code.";
-        errorDiv.classList.add('hidden');
+        errorDiv.classList.remove('hidden');
       }
     }
   </script>

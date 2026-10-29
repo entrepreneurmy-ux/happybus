@@ -24,8 +24,11 @@
   <!-- External CSS Stylesheet -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Clerk Frontend SDK -->
-  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk"></script>
+  <!-- Supabase JS Client SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
+  
+  <!-- Centralized Supabase Client Script -->
+  <script src="/assets/js/supabase-client.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
 
@@ -281,7 +284,7 @@
     </main>
   </div>
 
-  <script>
+<script>
     // 1. Script to load the centralized header dynamically with cache-buster
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -320,20 +323,57 @@
         
     lucide.createIcons();
 
+    // ─── SUPABASE AUTH & ROLE SECURITY CHECK WITH RETRY ───
     window.addEventListener('load', async function () {
-      await window.Clerk.load();
+      let session = null;
+      
+      // Try up to 3 times to grab the session in case localStorage is still syncing
+      for (let i = 0; i < 3; i++) {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (data?.session) {
+          session = data.session;
+          break;
+        }
+        await new Promise(resolve => setTimeout(resolve, 200)); // wait 200ms and retry
+      }
 
-      // Optional: Protect route — redirect to signin if no session is found
-      if (!window.Clerk.session) {
+      console.log("Resolved Session:", session);
+
+      if (!session) {
+        console.warn("No active session found after retries. Redirecting to signin...");
         window.location.href = 'signin.html';
         return;
+      }
+
+      try {
+        // Check if user has an 'admin' role in the profiles table
+        const { data: profile, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+
+        console.log("Fetched Profile:", profile);
+
+        if (profileError || !profile || profile.role !== 'admin') {
+          console.warn("Role check failed or user is not admin.");
+          alert('Access denied. Administrator privileges required.');
+          window.location.href = 'signin.html';
+        } else {
+          console.log("SUCCESS: Admin verified! Staying on dashboard.");
+        }
+      } catch (err) {
+        console.error('Authentication check failed:', err);
+        window.location.href = 'signin.html';
       }
     });
 
     async function handleSignOut() {
-      await window.Clerk.signOut();
+      await supabaseClient.auth.signOut();
       window.location.href = 'signin.html';
     }
   </script>
+
+  
 </body>
 </html>
