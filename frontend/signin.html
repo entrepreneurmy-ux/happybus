@@ -24,9 +24,11 @@
   <!-- External CSS Stylesheet -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Clerk Frontend SDK -->
-  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" data-clerk-publishable-key="pk_test_c2F2ZWQtc3RvcmstODQ4MC5jbGVyay5hY2NvdW50cy5kZXYk">
-  </script>
+  <!-- Supabase JS Client SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
+  
+  <!-- Centralized Supabase Client Script -->
+  <script src="/assets/js/supabase-client.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
   
@@ -61,15 +63,11 @@
             Sign In
           </button>
 
-          <!-- Clerk Authorization Badge -->
-          <a href="https://clerk.com/legal/standard-terms" target="_blank" rel="noopener noreferrer" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #4b5563; text-align: center; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+          <!-- Supabase Authorization Badge -->
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #4b5563; text-align: center; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 6px;">
             <span>Secured by</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px; color: #111827; font-size: 16px; font-weight: 700;">
-              <!-- Local SVG File Reference -->
-              <img src="/assets/svg/symbol-dark.svg" alt="Clerk logo" style="height: 16px; width: auto; vertical-align: middle;" />
-              clerk
-            </span>
-          </a>
+            <span style="color: #111827; font-size: 15px; font-weight: 700;">Supabase Auth</span>
+          </div>
         </form>
 
       </div>
@@ -113,42 +111,36 @@
       }
     });
 
-    // 2. Initialize Clerk Auth & Auto-clear lingering sessions
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
 
-    window.addEventListener('load', async function () {
-      await window.Clerk.load();
-
-      // If a lingering session exists on load, sign out automatically
-      if (window.Clerk.session) {
-        await window.Clerk.signOut();
-      }
-    });
-
     async function handleLogin(e) {
       e.preventDefault();
       
-      const email = document.getElementById('loginEmail').value;
+      const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
       const errorDiv = document.getElementById('error-message');
       
       errorDiv.classList.add('hidden');
 
       try {
-        // Authenticate via Clerk sign-in attempt
-        const signInAttempt = await window.Clerk.client.signIn.create({
-          identifier: email,
+        // Authenticate via Supabase sign-in
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
           password: password,
         });
 
-        if (signInAttempt.status === "complete") {
-          await window.Clerk.setActive({ session: signInAttempt.createdSessionId });
+        if (error) {
+          errorDiv.innerText = error.message;
+          errorDiv.classList.remove('hidden');
+          return;
+        }
 
-          // Retrieve user role from unsafeMetadata (safely readable on frontend)
-          const user = window.Clerk.user;
-          const role = user?.unsafeMetadata?.role || 'parent';
+        if (data.session) {
+          // Retrieve user role from user_metadata (or fall back to 'parent')
+          const user = data.user;
+          const role = user?.user_metadata?.role || user?.app_metadata?.role || 'parent';
 
           if (role === 'admin') {
             window.location.href = 'admin-dashboard.html';
@@ -157,13 +149,10 @@
           } else {
             window.location.href = 'parent-dashboard.html';
           }
-        } else {
-          errorDiv.innerText = "Sign in status: " + signInAttempt.status;
-          errorDiv.classList.remove('hidden');
         }
       } catch (err) {
         console.error("Sign In error:", err);
-        errorDiv.innerText = err.errors?.[0]?.message || "Invalid email or password.";
+        errorDiv.innerText = "Invalid email or password.";
         errorDiv.classList.remove('hidden');
       }
     }

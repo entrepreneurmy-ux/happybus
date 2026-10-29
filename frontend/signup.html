@@ -26,6 +26,9 @@
 
   <!-- Supabase JS Client SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
+  
+  <!-- Centralized Supabase Client Script -->
+  <script src="/assets/js/supabase-client.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
 
@@ -101,13 +104,6 @@
   </main>
 
 <script>
-    // ── SUPABASE CONFIGURATION ──
-    const SUPABASE_URL = 'https://ywxonjofkzmkkckaxerj.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3eG9uam9ma3pta2tja2F4ZXJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxODg2ODEsImV4cCI6MjEwODc2NDY4MX0.e37iyecmg1J0vxNKmfUiav3hDKXVkCwPS-cpceP1Uck';
-    
-    // Initialize Supabase Client safely
-    const supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     // 1. Script to load the centralized header dynamically and highlight the active page
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -183,7 +179,8 @@
       errorDiv.classList.add('hidden');
 
       try {
-        const { data, error } = await supabaseApp.auth.signUp({
+        // Uses the global 'supabaseClient' instance from supabase-client.js
+        const { data, error } = await supabaseClient.auth.signUp({
           email: email,
           password: password,
           options: {
@@ -192,7 +189,7 @@
               last_name: lastName,
               invitation_code: invitationCode
             },
-            emailRedirectTo: `${window.location.origin}/parent_dashboard.html`
+            emailRedirectTo: `${window.location.origin}/parent-dashboard.html`
           }
         });
 
@@ -204,7 +201,7 @@
 
         // If email confirmation is disabled, data.session will exist immediately
         if (data.session) {
-          window.location.href = 'parent_dashboard.html';
+          window.location.href = 'parent-dashboard.html';
         } else {
           errorDiv.className = "text-xs text-emerald-600 font-semibold";
           errorDiv.innerText = "Account created! Please check your email for the verification code.";
@@ -217,7 +214,7 @@
         console.error("Signup error:", err);
         errorDiv.className = "text-xs text-rose-500 font-semibold";
         errorDiv.innerText = "Something went wrong during signup.";
-        errorDiv.classList.remove('hidden');
+        errorDiv.classList.add('hidden');
       }
     }
 
@@ -227,7 +224,8 @@
       const errorDiv = document.getElementById('error-message');
 
       try {
-        const { data, error } = await supabaseApp.auth.verifyOtp({
+        // Updated to use supabaseClient consistently
+        const { data, error } = await supabaseClient.auth.verifyOtp({
           email: email,
           token: code,
           type: 'signup'
@@ -238,13 +236,13 @@
           errorDiv.innerText = error.message;
           errorDiv.classList.remove('hidden');
         } else {
-          window.location.href = 'parent_dashboard.html';
+          window.location.href = 'parent-dashboard.html';
         }
       } catch (err) {
         console.error("Verification error:", err);
         errorDiv.className = "text-xs text-rose-500 font-semibold";
         errorDiv.innerText = "Invalid verification code.";
-        errorDiv.classList.remove('hidden');
+        errorDiv.classList.add('hidden');
       }
     }
   </script>
