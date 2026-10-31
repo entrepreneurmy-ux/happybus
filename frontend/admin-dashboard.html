@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HappyBus | Admin Overview</title>
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS CDN (kept for structural helpers if needed) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -19,52 +19,52 @@
   <!-- Instant Flicker-Free Layout Shell Script -->
   <script src="/assets/js/layout-shell.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="admin-body">
 
   <!-- GLOBAL NAVIGATION HEADER PLACEHOLDER -->
   <div id="header-placeholder"></div>
 
   <!-- Layout Container with Sidebar and Main Content -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow flex flex-col md:flex-row gap-8">
+  <div class="admin-layout-container">
     
     <!-- Left Sidebar Placeholder -->
     <div id="sidebar-placeholder"></div>
 
     <!-- Overview Main Content -->
-    <main class="flex-grow space-y-6 min-w-0">
+    <main class="admin-main-content">
 
       <!-- Page Banner Header -->
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+      <div class="admin-banner">
         <div>
-          <h2 class="text-2xl font-black text-slate-900">Executive Command Center</h2>
-          <p class="text-xs font-bold text-slate-500">Live operational oversight & business performance summary</p>
+          <h2 class="admin-banner-title">Executive Command Center</h2>
+          <p class="admin-banner-subtitle">Live operational oversight & business performance summary</p>
         </div>
-        <button onclick="alert('Dispatch Broadcast Alert')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center gap-2">
-          <i data-lucide="radio" class="w-4 h-4"></i> Broadcast Bus Alert
+        <button onclick="alert('Dispatch Broadcast Alert')" class="admin-alert-btn">
+          <i data-lucide="radio" class="admin-icon-sm"></i> Broadcast Bus Alert
         </button>
       </div>
 
       <!-- Quick KPI Summary -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-          <span class="text-xs font-bold text-slate-400 uppercase">Total Active Students</span>
-          <div class="text-3xl font-black text-slate-900">1,248</div>
-          <span class="text-xs font-bold text-emerald-600">↑ +12% this month</span>
+      <div class="admin-kpi-grid">
+        <div class="admin-kpi-card">
+          <span class="admin-kpi-label">Total Active Students</span>
+          <div class="admin-kpi-value">1,248</div>
+          <span class="admin-kpi-trend-emerald">↑ +12% this month</span>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-          <span class="text-xs font-bold text-slate-400 uppercase">Monthly Revenue</span>
-          <div class="text-3xl font-black text-slate-900">$74,880</div>
-          <span class="text-xs font-bold text-emerald-600">100% Collected</span>
+        <div class="admin-kpi-card">
+          <span class="admin-kpi-label">Monthly Revenue</span>
+          <div class="admin-kpi-value">$74,880</div>
+          <span class="admin-kpi-trend-emerald">100% Collected</span>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-          <span class="text-xs font-bold text-slate-400 uppercase">Avg On-Time Arrival</span>
-          <div class="text-3xl font-black text-slate-900">98.2%</div>
-          <span class="text-xs font-bold text-emerald-600">Target &gt;95%</span>
+        <div class="admin-kpi-card">
+          <span class="admin-kpi-label">Avg On-Time Arrival</span>
+          <div class="admin-kpi-value">98.2%</div>
+          <span class="admin-kpi-trend-emerald">Target &gt;95%</span>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-          <span class="text-xs font-bold text-slate-400 uppercase">Bus Health Score</span>
-          <div class="text-3xl font-black text-slate-900">91 / 100</div>
-          <span class="text-xs font-bold text-amber-600">3 Buses Scheduled Repair</span>
+        <div class="admin-kpi-card">
+          <span class="admin-kpi-label">Bus Health Score</span>
+          <div class="admin-kpi-value">91 / 100</div>
+          <span class="admin-kpi-trend-amber">3 Buses Scheduled Repair</span>
         </div>
       </div>
 

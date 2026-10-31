@@ -3,10 +3,11 @@
    Path: frontend/assets/css/style.css
    ========================================================================== */
 
-/* 1. Global External Font Import */
+/* ==========================================================================
+   1. GLOBAL EXTERNAL FONTS & VARIABLES
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* 2. Design Tokens & CSS Variables */
 :root {
   --color-amber-50:  #fffbeb;
   --color-amber-100: #fef3c7;
@@ -31,7 +32,9 @@
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* 3. Global Base Reset Adjustments */
+/* ==========================================================================
+   2. GLOBAL BASE RESET & SCROLLBARS
+   ========================================================================== */
 html, body {
   font-family: var(--font-sans) !important;
   background-color: var(--color-slate-50);
@@ -41,7 +44,6 @@ html, body {
   box-sizing: border-box;
 }
 
-/* 4. Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -63,8 +65,10 @@ html, body {
 }
 
 /* ==========================================================================
-   11. PAGE: PUBLIC NAVIGATION HEADER STYLES (Collapse in editor as needed)
+   3. GLOBAL NAVIGATION HEADERS
    ========================================================================== */
+
+/* --- Public Navigation Header (header.html) --- */
 .pub-header {
   position: sticky;
   top: 0;
@@ -229,9 +233,8 @@ html, body {
   color: var(--color-amber-600);
 }
 
-/* ==========================================================================
-   10. PAGE: SIGN-OUT HEADER STYLES (Collapse in editor as needed)
-   ========================================================================== */
+
+/* --- Signout Navigation Header (signout-header.html) --- */
 .so-header {
   position: sticky;
   top: 0;
@@ -376,9 +379,15 @@ html, body {
   background-color: #fef2f2;
 }
 
+
 /* ==========================================================================
-   5. PAGE: INDEX.HTML STYLES (Collapse in editor as needed)
+   4. PAGE: INDEX STYLES (index.html)
    ========================================================================== */
+.index-main {
+  flex-grow: 1;
+}
+
+/* --- Hero Section --- */
 .hero-container {
   background: linear-gradient(to bottom, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05), #ffffff);
   padding-top: 4rem;
@@ -845,9 +854,12 @@ html, body {
   background-color: var(--color-slate-800);
 }
 
+
 /* ==========================================================================
-   6. PAGE: SIGN-UP PAGE STYLES (Collapse in editor as needed)
+   5. PAGE: AUTHENTICATION STYLES (Signup, Signin, Reset Password)
    ========================================================================== */
+
+/* --- Signup Page (signup.html) --- */
 .signup-main {
   flex-grow: 1;
   padding-top: 4rem;
@@ -1028,9 +1040,8 @@ html, body {
   font-weight: 700;
 }
 
-/* ==========================================================================
-   7. PAGE: SIGN-IN PAGE STYLES (Collapse in editor as needed)
-   ========================================================================== */
+
+/* --- Signin Page (signin.html) --- */
 .signin-main {
   flex-grow: 1;
   padding-top: 4rem;
@@ -1162,9 +1173,8 @@ html, body {
   font-weight: 700;
 }
 
-/* ==========================================================================
-   9. PAGE: RESET PASSWORD PAGE STYLES (Collapse in editor as needed)
-   ========================================================================== */
+
+/* --- Reset Password Page (reset-password.html) --- */
 .reset-main {
   flex-grow: 1;
   padding-top: 4rem;
@@ -1279,3 +1289,159 @@ html, body {
   font-weight: 700;
 }
 
+
+/* ==========================================================================
+   6. PAGE: ADMIN DASHBOARD STYLES (admin-driverbus.html & dashboards)
+   ========================================================================== */
+.admin-body {
+  background-color: var(--color-slate-50);
+  color: var(--color-slate-800);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.admin-layout-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (min-width: 640px) {
+  .admin-layout-container { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+@media (min-width: 768px) {
+  .admin-layout-container { flex-direction: row; }
+}
+@media (min-width: 1024px) {
+  .admin-layout-container { padding-left: 2rem; padding-right: 2rem; }
+}
+
+.admin-main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.admin-banner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--color-slate-200);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 768px) {
+  .admin-banner { flex-direction: row; align-items: center; }
+}
+
+.admin-banner-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 900;
+  color: var(--color-slate-900);
+  margin: 0;
+}
+
+.admin-banner-subtitle {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: var(--color-slate-500);
+  margin: 0;
+}
+
+.admin-alert-btn {
+  padding: 0.625rem 1rem;
+  background-color: var(--color-amber-500);
+  color: var(--color-slate-950);
+  font-weight: 700;
+  font-size: 0.75rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.admin-alert-btn:hover {
+  background-color: var(--color-amber-600);
+}
+
+.admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .admin-kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.admin-kpi-card {
+  background-color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-slate-200);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-kpi-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: var(--color-slate-400);
+  text-transform: uppercase;
+}
+
+.admin-kpi-value {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 900;
+  color: var(--color-slate-900);
+}
+
+.admin-kpi-trend-emerald {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.admin-kpi-trend-amber {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: var(--color-amber-600);
+}
+
+.admin-icon-sm {
+  width: 1rem;
+  height: 1rem;
+}
