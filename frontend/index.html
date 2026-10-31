@@ -185,7 +185,7 @@
       const plan = document.getElementById('calcPlan').value;
       let price = count * 60;
       if (plan === 'annual') price = Math.round(price * 0.8);
-      document.getElementById('calcPriceDisplay').innerHTML = `$${price} <span style="font-size: 1rem; font-weight: 700;">/ ${plan === 'annual' ? 'yr' : 'mo'}</span>`;
+      document.getElementById('calcPriceDisplay').innerHTML = `RM${price} <span style="font-size: 1rem; font-weight: 700;">/ ${plan === 'annual' ? 'yr' : 'mo'}</span>`;
     }
 
     function searchRoutes() {
@@ -193,7 +193,7 @@
       const res = document.getElementById('searchResult');
       if (!val) return;
       res.style.display = 'block';
-      res.innerText = `Great news! 4 HappyBus active pickup routes serve district zone '${val}'. Passes start at $60/mo.`;
+      res.innerText = `Great news! 4 HappyBus active pickup routes serve district zone '${val}'. Passes start at RM60/mo.`;
     }
   </script>
 </body>

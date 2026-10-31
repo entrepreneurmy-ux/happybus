@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappyBus | Driver & Bus Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
+  <script src="/assets/js/supabase-client.js"></script>
+
+  <!-- Instant Flicker-Free Layout Shell Script -->
+  <script src="/assets/js/layout-shell.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- GLOBAL NAVIGATION HEADER PLACEHOLDER -->
+  <div id="header-placeholder"></div>
+
+  <!-- Layout Container with Sidebar and Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow flex flex-col md:flex-row gap-8">
+    
+    <!-- Left Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Driver & Bus Main Content -->
+    <main class="flex-grow space-y-6 min-w-0">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 class="text-2xl font-black text-slate-900">Driver & Bus Management</h2>
+          <p class="text-xs font-bold text-slate-500">Register drivers, track compliance expirations, and manage bus allocations</p>
+        </div>
+        <div class="flex items-center gap-3 w-full md:w-auto">
+          <button onclick="openDriverModal()" class="flex-1 md:flex-initial px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
+            <i data-lucide="user-plus" class="w-4 h-4"></i> Add Driver
+          </button>
+          <button onclick="openBusModal()" class="flex-1 md:flex-initial px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
+            <i data-lucide="bus" class="w-4 h-4"></i> Register Bus
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Selection -->
+      <div class="flex border-b border-slate-200 gap-4 text-xs font-bold">
+        <button id="tab-drivers-btn" onclick="switchTab('drivers')" class="pb-3 border-b-2 border-amber-500 text-amber-600 flex items-center gap-2">
+          <i data-lucide="users" class="w-4 h-4"></i> Drivers Details (<span id="driver-count">0</span>)
+        </button>
+        <button id="tab-buses-btn" onclick="switchTab('buses')" class="pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+          <i data-lucide="bus" class="w-4 h-4"></i> Bus Details (<span id="bus-count">0</span>)
+        </button>
+      </div>
+
+      <!-- Drivers Section -->
+      <section id="section-drivers" class="space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+            <div class="relative w-full sm:w-72">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="text" id="driver-search" oninput="filterDrivers()" placeholder="Search drivers..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-amber-500">
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase font-bold text-[10px]">
+                  <th class="py-3 px-4">Driver Name</th>
+                  <th class="py-3 px-4">Phone Number</th>
+                  <th class="py-3 px-4">License Number</th>
+                  <th class="py-3 px-4">License Expiry</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="drivers-table-body" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Buses Section -->
+      <section id="section-buses" class="space-y-4 hidden">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+            <div class="relative w-full sm:w-72">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="text" id="bus-search" oninput="filterBuses()" placeholder="Search buses..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-amber-500">
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase font-bold text-[10px]">
+                  <th class="py-3 px-4">Plate Number</th>
+                  <th class="py-3 px-4">Model & Capacity</th>
+                  <th class="py-3 px-4">Assigned Driver</th>
+                  <th class="py-3 px-4">Roadtax Expiry</th>
+                  <th class="py-3 px-4">Insurance Expiry</th>
+                  <th class="py-3 px-4">Next Service (KM)</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="buses-table-body" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL 1: ADD / EDIT DRIVER FORM -->
+  <div id="driver-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-xl space-y-4 border border-slate-200">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 id="driver-modal-title" class="font-black text-slate-900 text-base">Add New Driver</h3>
+        <button onclick="closeDriverModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="driver-form" onsubmit="saveDriver(event)" class="space-y-3">
+        <input type="hidden" id="driver-id">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Full Name *</label>
+          <input type="text" id="driver-name" required placeholder="e.g. Tan Ah Hock" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Phone Number *</label>
+          <input type="text" id="driver-phone" required placeholder="e.g. +60127788990" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">License No. *</label>
+            <input type="text" id="driver-license" required placeholder="e.g. D8901234" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">License Expiry *</label>
+            <input type="date" id="driver-expiry" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Status</label>
+          <select id="driver-active" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeDriverModal()" class="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold shadow">Save Driver</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: REGISTER / EDIT BUS FORM -->
+  <div id="bus-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-xl space-y-4 border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 id="bus-modal-title" class="font-black text-slate-900 text-base">Register Bus</h3>
+        <button onclick="closeBusModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="bus-form" onsubmit="saveBus(event)" class="space-y-3">
+        <input type="hidden" id="bus-id">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Plate Number *</label>
+            <input type="text" id="bus-plate" required placeholder="e.g. JQB 8821" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Capacity (Pax) *</label>
+            <input type="number" id="bus-capacity" required min="1" placeholder="44" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Model / Make</label>
+            <input type="text" id="bus-model" placeholder="e.g. Isuzu NQR 75" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Assigned Driver</label>
+            <select id="bus-driver-id" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+              <option value="">-- No Driver Assigned --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-2xl space-y-3 border border-slate-100">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Compliance & Maintenance</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Roadtax Expiry *</label>
+              <input type="date" id="bus-roadtax" required class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Insurance Expiry *</label>
+              <input type="date" id="bus-insurance" required class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Last Service Date</label>
+              <input type="date" id="bus-last-service" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Next Service Due (KM)</label>
+              <input type="number" id="bus-next-km" placeholder="125000" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Status</label>
+          <select id="bus-status" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+            <option value="active">Active</option>
+            <option value="maintenance">Maintenance</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeBusModal()" class="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold shadow">Save Bus</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loadSupabaseData();
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+
+    let driversList = [];
+    let busesList = [];
+
+    async function loadSupabaseData() {
+      try {
+        const { data: dData } = await supabaseClient.from('drivers').select('*').order('created_at', { ascending: false });
+        driversList = dData || [];
+        const { data: bData } = await supabaseClient.from('buses').select('*').order('created_at', { ascending: false });
+        busesList = bData || [];
+
+        renderDriversTable(driversList);
+        renderBusesTable(busesList);
+        populateDriverDropdown();
+      } catch (err) {
+        console.error("Error loading data:", err);
+      }
+    }
+
+    function renderDriversTable(data) {
+      document.getElementById('driver-count').innerText = data.length;
+      const tbody = document.getElementById('drivers-table-body');
+      tbody.innerHTML = data.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No drivers found.</td></tr>` : '';
+      data.forEach(d => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-4 font-bold text-slate-900">${d.full_name || d.name || '-'}</td>
+            <td class="py-3 px-4">${d.phone_number || '-'}</td>
+            <td class="py-3 px-4">${d.license_number || '-'}</td>
+            <td class="py-3 px-4">${d.license_expiry || '-'}</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${d.is_active !== false ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'}">${d.is_active !== false ? 'Active' : 'Inactive'}</span></td>
+            <td class="py-3 px-4 text-right"><button onclick="editDriver('${d.id}')" class="p-1 hover:bg-slate-200 rounded text-slate-600"><i data-lucide="edit-3" class="w-4 h-4"></i></button></td>
+          </tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    function renderBusesTable(data) {
+      document.getElementById('bus-count').innerText = data.length;
+      const tbody = document.getElementById('buses-table-body');
+      tbody.innerHTML = data.length === 0 ? `<tr><td colspan="8" class="p-4 text-center text-slate-400">No buses found.</td></tr>` : '';
+      data.forEach(b => {
+        const driver = driversList.find(d => d.id === b.driver_id);
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-4 font-black text-slate-900">${b.plate_number || b.plate || '-'}</td>
+            <td class="py-3 px-4">${b.model || 'N/A'} (${b.capacity} Seats)</td>
+            <td class="py-3 px-4">${driver ? (driver.full_name || driver.name) : '<span class="text-slate-400">Unassigned</span>'}</td>
+            <td class="py-3 px-4">${b.roadtax_expiry || '-'}</td>
+            <td class="py-3 px-4">${b.insurance_expiry || '-'}</td>
+            <td class="py-3 px-4">${b.next_service_due_km ? b.next_service_due_km.toLocaleString() + ' km' : 'N/A'}</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${b.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}">${b.status || 'active'}</span></td>
+            <td class="py-3 px-4 text-right"><button onclick="editBus('${b.id}')" class="p-1 hover:bg-slate-200 rounded text-slate-600"><i data-lucide="edit-3" class="w-4 h-4"></i></button></td>
+          </tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    function switchTab(tab) {
+      if (tab === 'drivers') {
+        document.getElementById('section-drivers').classList.remove('hidden');
+        document.getElementById('section-buses').classList.add('hidden');
+        document.getElementById('tab-drivers-btn').className = 'pb-3 border-b-2 border-amber-500 text-amber-600 flex items-center gap-2';
+        document.getElementById('tab-buses-btn').className = 'pb-3 border-b-2 border-transparent text-slate-500 flex items-center gap-2';
+      } else {
+        document.getElementById('section-buses').classList.remove('hidden');
+        document.getElementById('section-drivers').classList.add('hidden');
+        document.getElementById('tab-buses-btn').className = 'pb-3 border-b-2 border-amber-500 text-amber-600 flex items-center gap-2';
+        document.getElementById('tab-drivers-btn').className = 'pb-3 border-b-2 border-transparent text-slate-500 flex items-center gap-2';
+      }
+    }
+
+    function filterDrivers() {
+      const q = document.getElementById('driver-search').value.toLowerCase();
+      const filtered = driversList.filter(d => (d.full_name || d.name || '').toLowerCase().includes(q) || (d.phone_number || '').includes(q));
+      renderDriversTable(filtered);
+    }
+
+    function filterBuses() {
+      const q = document.getElementById('bus-search').value.toLowerCase();
+      const filtered = busesList.filter(b => (b.plate_number || '').toLowerCase().includes(q) || (b.model || '').toLowerCase().includes(q));
+      renderBusesTable(filtered);
+    }
+
+    function populateDriverDropdown() {
+      const select = document.getElementById('bus-driver-id');
+      select.innerHTML = '<option value="">-- No Driver Assigned --</option>';
+      driversList.filter(d => d.is_active !== false).forEach(d => {
+        select.innerHTML += `<option value="${d.id}">${d.full_name || d.name} (${d.phone_number || '-'})</option>`;
+      });
+    }
+
+    function openDriverModal() {
+      document.getElementById('driver-id').value = '';
+      document.getElementById('driver-form').reset();
+      document.getElementById('driver-modal-title').innerText = 'Add New Driver';
+      document.getElementById('driver-modal').classList.remove('hidden');
+    }
+
+    function closeDriverModal() {
+      document.getElementById('driver-modal').classList.add('hidden');
+    }
+
+    function openBusModal() {
+      populateDriverDropdown();
+      document.getElementById('bus-id').value = '';
+      document.getElementById('bus-form').reset();
+      document.getElementById('bus-modal-title').innerText = 'Register Bus';
+      document.getElementById('bus-modal').classList.remove('hidden');
+    }
+
+    function closeBusModal() {
+      document.getElementById('bus-modal').classList.add('hidden');
+    }
+
+    async function saveDriver(e) {
+      e.preventDefault();
+      const id = document.getElementById('driver-id').value;
+      const payload = {
+        full_name: document.getElementById('driver-name').value,
+        phone_number: document.getElementById('driver-phone').value,
+        license_number: document.getElementById('driver-license').value,
+        license_expiry: document.getElementById('driver-expiry').value,
+        is_active: document.getElementById('driver-active').value === 'true'
+      };
+
+      try {
+        let error;
+        if (id) {
+          ({ error } = await supabaseClient.from('drivers').update(payload).eq('id', id));
+        } else {
+          ({ error } = await supabaseClient.from('drivers').insert([payload]));
+        }
+        if (error) throw error;
+
+        await loadSupabaseData();
+        closeDriverModal();
+      } catch (err) {
+        alert("Error saving driver: " + err.message);
+      }
+    }
+
+    async function saveBus(e) {
+      e.preventDefault();
+      const id = document.getElementById('bus-id').value;
+      const payload = {
+        plate_number: document.getElementById('bus-plate').value,
+        capacity: parseInt(document.getElementById('bus-capacity').value),
+        model: document.getElementById('bus-model').value,
+        driver_id: document.getElementById('bus-driver-id').value || null,
+        roadtax_expiry: document.getElementById('bus-roadtax').value,
+        insurance_expiry: document.getElementById('bus-insurance').value,
+        last_service_date: document.getElementById('bus-last-service').value || null,
+        status: document.getElementById('bus-status').value
+      };
+
+      const nextKm = document.getElementById('bus-next-km').value;
+      if (nextKm) {
+        payload.next_service_due_km = parseInt(nextKm);
+      }
+
+      try {
+        let error;
+        if (id) {
+          ({ error } = await supabaseClient.from('buses').update(payload).eq('id', id));
+        } else {
+          ({ error } = await supabaseClient.from('buses').insert([payload]));
+        }
+        if (error) throw error;
+
+        await loadSupabaseData();
+        closeBusModal();
+      } catch (err) {
+        alert("Error saving bus: " + err.message);
+      }
+    }
+
+    function editDriver(id) {
+      const d = driversList.find(item => item.id == id);
+      if (!d) return;
+      document.getElementById('driver-id').value = d.id;
+      document.getElementById('driver-name').value = d.full_name || d.name || '';
+      document.getElementById('driver-phone').value = d.phone_number || '';
+      document.getElementById('driver-license').value = d.license_number || '';
+      document.getElementById('driver-expiry').value = d.license_expiry || '';
+      document.getElementById('driver-active').value = d.is_active !== false ? 'true' : 'false';
+      document.getElementById('driver-modal-title').innerText = 'Edit Driver Details';
+      document.getElementById('driver-modal').classList.remove('hidden');
+    }
+
+    function editBus(id) {
+      const b = busesList.find(item => item.id == id);
+      if (!b) return;
+      populateDriverDropdown();
+      document.getElementById('bus-id').value = b.id;
+      document.getElementById('bus-plate').value = b.plate_number || b.plate || '';
+      document.getElementById('bus-capacity').value = b.capacity || '';
+      document.getElementById('bus-model').value = b.model || '';
+      document.getElementById('bus-driver-id').value = b.driver_id || '';
+      document.getElementById('bus-roadtax').value = b.roadtax_expiry || '';
+      document.getElementById('bus-insurance').value = b.insurance_expiry || '';
+      document.getElementById('bus-last-service').value = b.last_service_date || '';
+      document.getElementById('bus-next-km').value = b.next_service_due_km || '';
+      document.getElementById('bus-status').value = b.status || 'active';
+      document.getElementById('bus-modal-title').innerText = 'Edit Bus Details';
+      document.getElementById('bus-modal').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

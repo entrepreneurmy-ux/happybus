@@ -62,13 +62,323 @@ html, body {
   flex-direction: column;
 }
 
+/* ==========================================================================
+   11. PAGE: PUBLIC NAVIGATION HEADER STYLES (Collapse in editor as needed)
+   ========================================================================== */
+.pub-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-slate-200);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.pub-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .pub-container { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .pub-container { padding-left: 2rem; padding-right: 2rem; }
+}
+
+.pub-flex-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+}
+
+.pub-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.pub-logo-box {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to top right, var(--color-amber-500), var(--color-amber-400));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
+}
+
+.pub-brand-text {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--color-slate-900);
+  margin: 0;
+}
+
+.pub-brand-highlight {
+  color: var(--color-amber-500);
+}
+
+.pub-desktop-controls {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+}
+@media (min-width: 1024px) {
+  .pub-desktop-controls { display: flex; }
+}
+
+.pub-nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--color-slate-100);
+  padding: 0.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.pub-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-slate-600);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.pub-nav-link:hover {
+  color: var(--color-slate-900);
+}
+
+.pub-lang-select {
+  background-color: var(--color-slate-100);
+  border: 1px solid var(--color-slate-200);
+  color: var(--color-slate-700);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  outline: none;
+  cursor: pointer;
+}
+.pub-lang-select:focus {
+  border-color: var(--color-amber-500);
+}
+
+.pub-mobile-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+@media (min-width: 1024px) {
+  .pub-mobile-controls { display: none; }
+}
+
+.pub-mobile-btn {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--color-slate-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.pub-mobile-btn:hover {
+  color: var(--color-slate-900);
+  background-color: var(--color-slate-100);
+}
+
+.pub-mobile-dropdown {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-slate-200);
+  padding: 0.5rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 1024px) {
+  .pub-mobile-dropdown { display: none !important; }
+}
+
+.pub-mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-slate-700);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.pub-mobile-nav-link:hover {
+  background-color: var(--color-amber-50);
+  color: var(--color-amber-600);
+}
+
+/* ==========================================================================
+   10. PAGE: SIGN-OUT HEADER STYLES (Collapse in editor as needed)
+   ========================================================================== */
+.so-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-slate-200);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.so-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .so-container { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .so-container { padding-left: 2rem; padding-right: 2rem; }
+}
+
+.so-flex-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+}
+
+.so-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.so-logo-box {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to top right, var(--color-amber-500), var(--color-amber-400));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
+}
+
+.so-brand-text {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--color-slate-900);
+  margin: 0;
+}
+
+.so-brand-highlight {
+  color: var(--color-amber-500);
+}
+
+.so-right-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.so-desktop-btn {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-slate-600);
+  background-color: var(--color-slate-100);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-slate-200);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.so-desktop-btn:hover {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+@media (min-width: 640px) {
+  .so-desktop-btn { display: flex; }
+}
+
+.so-mobile-toggle-wrap {
+  display: flex;
+}
+@media (min-width: 640px) {
+  .so-mobile-toggle-wrap { display: none; }
+}
+
+.so-mobile-btn {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--color-slate-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.so-mobile-btn:hover {
+  color: var(--color-slate-900);
+  background-color: var(--color-slate-100);
+}
+
+.so-mobile-dropdown {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-slate-200);
+  padding: 0.5rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 640px) {
+  .so-mobile-dropdown { display: none !important; }
+}
+
+.so-mobile-dropdown-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #dc2626;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: right;
+}
+.so-mobile-dropdown-btn:hover {
+  background-color: #fef2f2;
+}
 
 /* ==========================================================================
    5. PAGE: INDEX.HTML STYLES (Collapse in editor as needed)
    ========================================================================== */
-:root {
-  /* Index-specific variables if any */
-}
 
 /* --- Hero Section --- */
 .hero-container {
@@ -569,4 +879,121 @@ html, body {
   font-size: 15px;
   font-weight: 700;
 }
-/* ========================================================================== */
+
+/* ==========================================================================
+   9. PAGE: RESET PASSWORD PAGE STYLES (Collapse in editor as needed)
+   ========================================================================== */
+.reset-main {
+  flex-grow: 1;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.reset-wrapper {
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.reset-card {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-slate-200);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reset-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reset-title {
+  font-size: 1.875rem;
+  font-weight: 900;
+  color: var(--color-slate-900);
+  margin: 0;
+}
+
+.reset-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-slate-500);
+  margin: 0;
+}
+
+.reset-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reset-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-slate-700);
+  margin-bottom: 0.25rem;
+}
+
+.reset-input {
+  width: 100%;
+  background-color: var(--color-slate-50);
+  border: 1px solid var(--color-slate-200);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  outline: none;
+  box-sizing: border-box;
+}
+.reset-input:focus {
+  border-color: var(--color-amber-500);
+}
+
+.reset-error-msg {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ef4444;
+}
+
+.reset-submit-btn {
+  width: 100%;
+  background-color: var(--color-amber-500);
+  color: var(--color-slate-950);
+  font-weight: 700;
+  padding: 0.875rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.reset-submit-btn:hover {
+  background-color: var(--color-amber-600);
+}
+
+.reset-auth-badge {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  text-align: center;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.reset-auth-brand {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 700;
+}
+

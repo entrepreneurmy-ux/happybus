@@ -1,30 +1,30 @@
-<header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
+<header class="so-header">
+  <div class="so-container">
+    <div class="so-flex-row">
       
       <!-- Brand Logo (Left) -->
-      <a href="index.html" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-amber-500/20">
-          <i data-lucide="bus" class="w-6 h-6 stroke-[2.5]"></i>
+      <a href="admin-dashboard.shtml" class="so-brand">
+        <div class="so-logo-box">
+          <i data-lucide="bus" style="width: 24px; height: 24px; stroke-width: 2.5;"></i>
         </div>
         <div>
-          <span class="text-xl font-extrabold tracking-tight text-slate-900">Happy<span class="text-amber-500">Bus</span></span>
+          <span class="so-brand-text">Happy<span class="so-brand-highlight">Bus</span></span>
         </div>
       </a>
 
       <!-- Right-Aligned Container -->
-      <div class="flex items-center ml-auto">
+      <div class="so-right-container">
         
         <!-- Desktop Sign Out Button -->
-        <button onclick="handleSignOut()" class="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-red-600 bg-slate-100 hover:bg-red-50 px-3 py-2 rounded-xl transition cursor-pointer border border-slate-200">
-          <i data-lucide="log-out" class="w-4 h-4"></i>
+        <button onclick="handleSignOut()" class="so-desktop-btn">
+          <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
           <span>Sign Out</span>
         </button>
 
         <!-- Mobile Menu Button (Right Aligned) -->
-        <div class="flex sm:hidden">
-          <button id="mobile-menu-button" type="button" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500" aria-label="Toggle Menu">
-            <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+        <div class="so-mobile-toggle-wrap">
+          <button id="mobile-menu-button" type="button" class="so-mobile-btn" aria-label="Toggle Menu">
+            <i data-lucide="menu" id="menu-icon" style="width: 24px; height: 24px;"></i>
           </button>
         </div>
 
@@ -34,10 +34,10 @@
   </div>
 
   <!-- Mobile Dropdown Menu (Right-Aligned Content) -->
-  <div id="mobile-menu" class="hidden sm:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1 shadow-lg">
-    <div class="flex flex-col items-end">
-      <button onclick="handleSignOut()" class="w-full flex items-center justify-end gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 cursor-pointer bg-transparent border-none text-right">
-        <i data-lucide="log-out" class="w-4 h-4"></i>
+  <div id="mobile-menu" class="so-mobile-dropdown hidden">
+    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+      <button onclick="handleSignOut()" class="so-mobile-dropdown-btn">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
         <span>Sign Out</span>
       </button>
     </div>
@@ -50,4 +50,12 @@
     const mobileMenu = document.getElementById('mobile-menu');
     mobileMenu.classList.toggle('hidden');
   });
+
+  // Global Sign Out Handler for Supabase
+  async function handleSignOut() {
+    if (typeof supabaseClient !== 'undefined') {
+      await supabaseClient.auth.signOut();
+    }
+    window.location.href = 'signin.html';
+  }
 </script>
