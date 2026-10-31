@@ -5,87 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HappyBus | Home</title>
   
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS CDN & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
-            slate: { 800: '#1e293b', 900: '#0f172a' }
-          }
-        }
-      }
-    }
-  </script>
 
   <!-- External CSS Stylesheet -->
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="page-body">
 
   <!-- GLOBAL NAVIGATION HEADER PLACEHOLDER -->
   <div id="header-placeholder"></div>
 
   <!-- INDEX CONTENT -->
-  <main class="flex-grow">
+  <main style="flex-grow: 1;">
     <!-- Hero Section -->
-    <div class="bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-white py-16 lg:py-24 border-b border-slate-100">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-12 gap-12 items-center">
-          <div class="lg:col-span-7 space-y-6">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider">
-              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Next-Gen School Transit
-            </span>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none">
-              Peace of mind on every <span class="text-amber-500 underline decoration-amber-300 decoration-4 underline-offset-4">school ride</span>.
-            </h1>
-            <p class="text-lg text-slate-600 max-w-2xl leading-relaxed">
-              Live GPS tracking, smart check-in notifications, and optimized routes. Keeping parents reassured and students safe every single day.
-            </p>
+    <div class="hero-container">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <span class="hero-badge">
+            <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> Next-Gen School Transit
+          </span>
+          <h1 class="hero-title">
+            Peace of mind on every <span class="hero-title-highlight">school ride</span>.
+          </h1>
+          <p class="hero-desc">
+            Live GPS tracking, smart check-in notifications, and optimized routes. Keeping parents reassured and students safe every single day.
+          </p>
 
-            <div class="bg-white p-3 rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200 flex flex-col sm:flex-row gap-3">
-              <div class="flex-1 flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
-                <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
-                <input type="text" id="routeSearchInput" placeholder="Enter school name or Zip Code..." class="bg-transparent border-none text-sm w-full outline-none font-medium">
-              </div>
-              <button onclick="searchRoutes()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                <span>Check Availability</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              </button>
+          <div class="search-card">
+            <div class="search-input-box">
+              <i data-lucide="search" style="width: 20px; height: 20px; color: var(--color-slate-400);"></i>
+              <input type="text" id="routeSearchInput" placeholder="Enter school name or Zip Code..." class="search-input-field">
             </div>
-            <div id="searchResult" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-sm font-semibold"></div>
+            <button onclick="searchRoutes()" class="btn-primary">
+              <span>Check Availability</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </button>
           </div>
+          <div id="searchResult" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 0.75rem; background-color: var(--color-amber-50); border: 1px solid var(--color-amber-200); color: var(--color-amber-900); font-size: 0.875rem; font-weight: 600;"></div>
+        </div>
 
-          <div class="lg:col-span-5 relative">
-            <div class="absolute -top-6 -left-6 w-32 h-32 bg-amber-300/30 rounded-full blur-2xl"></div>
-            <div class="relative bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 space-y-4">
-              <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
-                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-slate-900 text-sm">Bus #42 Arrived</h4>
-                    <p class="text-xs text-slate-500">Oakridge Elementary • 2 mins ago</p>
-                  </div>
+        <div class="hero-right">
+          <div style="position: absolute; top: -1.5rem; left: -1.5rem; width: 8rem; height: 8rem; background-color: rgba(252, 211, 77, 0.3); border-radius: 9999px; filter: blur(24px);"></div>
+          <div style="position: relative; background-color: #ffffff; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid var(--color-slate-100);">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid var(--color-slate-100);">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 2.5rem; height: 2.5rem; border-radius: 9999px; background-color: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="check-circle-2" style="width: 20px; height: 20px;"></i>
                 </div>
-                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Safe Drop</span>
+                <div>
+                  <h4 style="font-weight: 700; color: var(--color-slate-900); font-size: 0.875rem; margin: 0;">Bus #42 Arrived</h4>
+                  <p style="font-size: 0.75rem; color: var(--color-slate-500); margin: 0;">Oakridge Elementary • 2 mins ago</p>
+                </div>
               </div>
-              <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
-                <div class="flex justify-between items-center text-xs font-bold text-slate-500">
-                  <span>LIVE BUS #42 STATUS</span>
-                  <span class="text-amber-600 animate-pulse">● EN ROUTE</span>
-                </div>
-                <div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
-                  <div class="h-full bg-amber-500 w-3/4 rounded-full"></div>
-                </div>
-                <div class="flex justify-between items-center text-xs text-slate-700 font-bold">
-                  <span>Current Stop: 4th Ave</span>
-                  <span>ETA: 8 Mins</span>
-                </div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: #059669; background-color: #ecfdf5; padding: 0.25rem 0.625rem; border-radius: 9999px;">Safe Drop</span>
+            </div>
+            <div style="margin-top: 1rem; padding: 1rem; background-color: var(--color-slate-50); border-radius: 1rem; border: 1px solid var(--color-slate-100);">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 700; color: var(--color-slate-500);">
+                <span>LIVE BUS #42 STATUS</span>
+                <span style="color: var(--color-amber-600);">● EN ROUTE</span>
+              </div>
+              <div style="margin-top: 0.75rem; height: 0.5rem; width: 100%; background-color: var(--color-slate-200); border-radius: 9999px; overflow: hidden;">
+                <div style="height: 100%; background-color: var(--color-amber-500); width: 75%;"></div>
+              </div>
+              <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--color-slate-700); font-weight: 700;">
+                <span>Current Stop: 4th Ave</span>
+                <span>ETA: 8 Mins</span>
               </div>
             </div>
           </div>
@@ -94,56 +80,54 @@
     </div>
 
     <!-- Live Stats Bar -->
-    <div class="bg-slate-900 py-10 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">12,400+</div>
-            <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">Daily Safe Rides</div>
-          </div>
-          <div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">99.4%</div>
-            <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">On-Time Arrival Rate</div>
-          </div>
-          <div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">180+</div>
-            <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">Partner Schools</div>
-          </div>
-          <div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-amber-400">4.9/5★</div>
-            <div class="text-xs sm:text-sm font-medium text-slate-400 mt-1">Parent Satisfaction</div>
-          </div>
+    <div class="stats-bar">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-value">12,400+</div>
+          <div class="stat-label">Daily Safe Rides</div>
+        </div>
+        <div>
+          <div class="stat-value">99.4%</div>
+          <div class="stat-label">On-Time Arrival Rate</div>
+        </div>
+        <div>
+          <div class="stat-value">180+</div>
+          <div class="stat-label">Partner Schools</div>
+        </div>
+        <div>
+          <div class="stat-value">4.9/5★</div>
+          <div class="stat-label">Parent Satisfaction</div>
         </div>
       </div>
     </div>
 
     <!-- Bus Pass Calculator -->
-    <div class="py-16 bg-slate-50 border-t border-slate-200">
-      <div class="max-w-4xl mx-auto px-4">
-        <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200">
-          <h3 class="text-2xl font-black text-slate-900 text-center mb-6">Interactive Bus Pass Calculator</h3>
-          <div class="grid md:grid-cols-2 gap-8 items-center">
-            <div class="space-y-4">
+    <div style="padding-top: 4rem; padding-bottom: 4rem; background-color: var(--color-slate-50); border-top: 1px solid var(--color-slate-200);">
+      <div style="max-width: 56rem; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem;">
+        <div style="background-color: #ffffff; border-radius: 1.5rem; padding: 2rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border: 1px solid var(--color-slate-200);">
+          <h3 style="font-size: 1.5rem; font-weight: 900; color: var(--color-slate-900); text-align: center; margin-bottom: 1.5rem;">Interactive Bus Pass Calculator</h3>
+          <div style="display: grid; gap: 2rem; align-items: center;" class="calc-inner-grid">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
               <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Number of Students</label>
-                <input type="range" id="calcStudents" min="1" max="4" value="1" oninput="updateCalculator()" class="w-full accent-amber-500">
-                <div class="flex justify-between text-xs font-bold text-amber-600 mt-1">
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--color-slate-700); text-transform: uppercase; margin-bottom: 0.5rem;">Number of Students</label>
+                <input type="range" id="calcStudents" min="1" max="4" value="1" oninput="updateCalculator()" style="width: 100%; accent-color: var(--color-amber-500);">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--color-amber-600); margin-top: 0.25rem;">
                   <span>1 Child</span><span>2 Children</span><span>3 Children</span><span>4 Children</span>
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Billing Plan</label>
-                <select id="calcPlan" onchange="updateCalculator()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold">
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--color-slate-700); text-transform: uppercase; margin-bottom: 0.5rem;">Billing Plan</label>
+                <select id="calcPlan" onchange="updateCalculator()" style="width: 100%; background-color: var(--color-slate-50); border: 1px solid var(--color-slate-200); border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem; font-weight: 700;">
                   <option value="monthly">Monthly Subscription</option>
                   <option value="annual">Annual Pass (Save 20%)</option>
                 </select>
               </div>
             </div>
-            <div class="bg-amber-500 text-slate-950 p-6 rounded-2xl text-center space-y-2">
-              <span class="text-xs font-bold uppercase tracking-widest text-slate-900">Estimated Total</span>
-              <div id="calcPriceDisplay" class="text-4xl font-black">$60 <span class="text-base font-bold">/ month</span></div>
-              <p class="text-xs font-semibold text-slate-900">Includes live GPS, SMS alerts & dedicated support.</p>
-              <a href="signup.html" class="mt-4 inline-block w-full bg-slate-950 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-sm transition">
+            <div style="background-color: var(--color-amber-500); color: var(--color-slate-950); padding: 1.5rem; border-radius: 1rem; text-align: center; display: flex; flex-direction: column; gap: 0.5rem;">
+              <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-slate-900);">Estimated Total</span>
+              <div id="calcPriceDisplay" style="font-size: 2.25rem; font-weight: 900;">$60 <span style="font-size: 1rem; font-weight: 700;">/ month</span></div>
+              <p style="font-size: 0.75rem; font-weight: 600; color: var(--color-slate-900); margin: 0;">Includes live GPS, SMS alerts & dedicated support.</p>
+              <a href="signup.html" style="margin-top: 1rem; display: inline-block; width: 100%; background-color: var(--color-slate-950); color: #ffffff; font-weight: 700; padding: 0.625rem; border-radius: 0.75rem; font-size: 0.875rem; text-decoration: none; transition: background-color 0.2s;">
                 Get Started Now
               </a>
             </div>
@@ -153,74 +137,64 @@
     </div>
   </main>
 
-<script>
-    // 1. Script to load the centralized header dynamically with robust error checking
+  <style>
+    @media (min-width: 768px) {
+      .calc-inner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+
+  <script>
+    // 1. Script to load the centralized header dynamically
     document.addEventListener("DOMContentLoaded", async () => {
       try {
         const placeholder = document.getElementById('header-placeholder');
-        if (!placeholder) {
-          console.error("CRITICAL: Missing <div id='header-placeholder'></div> in index.html!");
-          return;
-        }
+        if (!placeholder) return;
 
         const response = await fetch('header.html?v=' + new Date().getTime());
-        if (!response.ok) throw new Error('Failed to load header.html (Status: ' + response.status + ')');
+        if (!response.ok) throw new Error('Failed to load header.html');
         
         const html = await response.text();
         placeholder.outerHTML = html;
 
-        // Highlight active nav item based on current file name
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         document.querySelectorAll('.nav-link').forEach(link => {
           if (link.getAttribute('data-page') === currentPage) {
-            link.className = "nav-link px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+            link.style.backgroundColor = 'var(--color-amber-500)';
+            link.style.color = 'var(--color-slate-950)';
           }
         });
 
-        // Re-initialize Lucide icons for the newly injected header content
-        if (typeof lucide !== 'undefined') {
-          lucide.createIcons();
-        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
 
-        // ─── MOBILE MENU TOGGLE ───
         const menuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-
         if (menuButton && mobileMenu) {
           menuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
-            console.log("Mobile menu toggled successfully!");
           });
-        } else {
-          console.warn("Warning: #mobile-menu-button or #mobile-menu not found in header.html");
         }
-
       } catch (error) {
         console.error('Error loading navigation header:', error);
       }
     });
 
-    // 2. Existing page scripts
-    if (typeof lucide !== 'undefined') {
-      lucide.createIcons();
-    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
     
     function updateCalculator() {
       const count = document.getElementById('calcStudents').value;
       const plan = document.getElementById('calcPlan').value;
       let price = count * 60;
       if (plan === 'annual') price = Math.round(price * 0.8);
-      document.getElementById('calcPriceDisplay').innerHTML = `$${price} <span class="text-base font-bold">/ ${plan === 'annual' ? 'yr' : 'mo'}</span>`;
+      document.getElementById('calcPriceDisplay').innerHTML = `$${price} <span style="font-size: 1rem; font-weight: 700;">/ ${plan === 'annual' ? 'yr' : 'mo'}</span>`;
     }
 
     function searchRoutes() {
       const val = document.getElementById('routeSearchInput').value;
       const res = document.getElementById('searchResult');
       if (!val) return;
-      res.classList.remove('hidden');
+      res.style.display = 'block';
       res.innerText = `Great news! 4 HappyBus active pickup routes serve district zone '${val}'. Passes start at $60/mo.`;
     }
   </script>
-
 </body>
 </html>

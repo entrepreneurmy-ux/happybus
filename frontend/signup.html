@@ -5,106 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HappyBus | Sign Up</title>
   
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS CDN & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
-            slate: { 800: '#1e293b', 900: '#0f172a' }
-          }
-        }
-      }
-    }
-  </script>
 
   <!-- External CSS Stylesheet -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Supabase JS Client SDK -->
+  <!-- Supabase JS Client SDK & Centralized Client Script -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
-  
-  <!-- Centralized Supabase Client Script -->
   <script src="/assets/js/supabase-client.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="page-body">
 
   <!-- GLOBAL NAVIGATION HEADER PLACEHOLDER -->
   <div id="header-placeholder"></div>
 
-  <main class="flex-grow py-16">
-    <div class="max-w-lg mx-auto px-4">
-      <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6">
-        <div class="text-center space-y-2">
-          <h2 class="text-3xl font-black text-slate-900">Create Account</h2>
-          <p class="text-sm text-slate-500">Enter your details and pre-registered phone number</p>
+  <main class="signup-main">
+    <div class="signup-wrapper">
+      <div class="signup-card">
+        <div class="signup-header">
+          <h2 class="signup-title">Create Account</h2>
+          <p class="signup-subtitle">Enter your details and pre-registered phone number</p>
         </div>
 
-        <form onsubmit="handleSignup(event)" class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
+        <form onsubmit="handleSignup(event)" class="signup-form">
+          <div class="signup-grid-cols">
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">First Name</label>
-              <input type="text" id="firstName" required placeholder="Alex" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+              <label class="signup-label">First Name</label>
+              <input type="text" id="firstName" required placeholder="Alex" class="signup-input">
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Last Name</label>
-              <input type="text" id="lastName" required placeholder="Tan" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+              <label class="signup-label">Last Name</label>
+              <input type="text" id="lastName" required placeholder="Tan" class="signup-input">
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-            <input type="email" id="email" required placeholder="alextan@example.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
+            <label class="signup-label">Email Address</label>
+            <input type="email" id="email" required placeholder="alextan@example.com" class="signup-input">
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number (Pre-registered by Operator)</label>
-            <input type="tel" id="phoneNumber" required placeholder="0123456789" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-amber-500">
-            <p class="text-[10px] text-slate-400 mt-1">Enter your mobile number as registered by the operator (e.g., 0123456789)</p>
+            <label class="signup-label">Phone Number (Pre-registered by Operator)</label>
+            <input type="tel" id="phoneNumber" required placeholder="0123456789" class="signup-input signup-input-bold">
+            <p class="signup-helper-text">Enter your mobile number as registered by the operator (e.g., 0123456789)</p>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Create Password</label>
-            <input type="password" id="signupPass" oninput="checkPasswordStrength()" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
-            <div class="mt-2 flex items-center gap-2">
-              <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <div id="strengthBar" class="h-full bg-slate-300 w-0 transition-all"></div>
+            <label class="signup-label">Create Password</label>
+            <input type="password" id="signupPass" oninput="checkPasswordStrength()" required class="signup-input">
+            <div class="signup-strength-container">
+              <div class="signup-strength-track">
+                <div id="strengthBar" class="signup-strength-bar"></div>
               </div>
-              <span id="strengthText" class="text-xs font-bold text-slate-400">Weak</span>
+              <span id="strengthText" class="signup-strength-text">Weak</span>
             </div>
           </div>
 
           <!-- Hidden Verification Code Section -->
-          <div id="verification-section" class="space-y-3 hidden">
-            <label class="block text-xs font-bold text-slate-700">Enter Verification Code sent to your Email</label>
-            <input type="text" id="verificationCode" placeholder="123456" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500">
-            <button type="button" onclick="verifyEmail()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition">
+          <div id="verification-section" class="signup-verification-box hidden">
+            <label class="signup-label">Enter Verification Code sent to your Email</label>
+            <input type="text" id="verificationCode" placeholder="123456" class="signup-input">
+            <button type="button" onclick="verifyEmail()" class="signup-verify-btn">
               Verify & Complete
             </button>
           </div>
 
           <!-- Error message container -->
-          <div id="error-message" class="text-xs text-rose-500 font-semibold hidden"></div>
+          <div id="error-message" class="signup-error-msg hidden"></div>
 
-          <button type="submit" id="submitBtn" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition">
+          <button type="submit" id="submitBtn" class="signup-submit-btn">
             Sign Up
           </button>
           
           <!-- Supabase Authorization Badge -->
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #4b5563; text-align: center; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <div class="signup-auth-badge">
             <span>Secured by</span>
-            <span style="color: #111827; font-size: 15px; font-weight: 700;">Supabase Auth</span>
+            <span class="signup-auth-brand">Supabase Auth</span>
           </div>
-
         </form>
       </div>
     </div>
   </main>
 
-<script>
+  <script>
     // 1. Script to load the centralized header dynamically with cache-buster
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -118,7 +103,8 @@
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         document.querySelectorAll('.nav-link').forEach(link => {
           if (link.getAttribute('data-page') === currentPage) {
-            link.className = "nav-link px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+            link.style.backgroundColor = 'var(--color-amber-500)';
+            link.style.color = 'var(--color-slate-950)';
           }
         });
 
@@ -151,15 +137,15 @@
       const txt = document.getElementById('strengthText');
       if (val.length > 8) {
         bar.style.width = '100%';
-        bar.className = 'h-full bg-emerald-500 transition-all';
+        bar.style.backgroundColor = '#10b981';
         txt.innerText = 'Strong';
       } else if (val.length > 4) {
         bar.style.width = '50%';
-        bar.className = 'h-full bg-amber-500 transition-all';
+        bar.style.backgroundColor = 'var(--color-amber-500)';
         txt.innerText = 'Medium';
       } else {
         bar.style.width = '20%';
-        bar.className = 'h-full bg-rose-500 transition-all';
+        bar.style.backgroundColor = '#ef4444';
         txt.innerText = 'Weak';
       }
     }
@@ -184,7 +170,6 @@
           .eq('phone', phoneNumber);
 
         if (queryError || !existingProfiles || existingProfiles.length === 0) {
-          errorDiv.className = "text-xs text-rose-500 font-semibold";
           errorDiv.innerText = "This phone number is not pre-registered by your bus operator. Please contact support.";
           errorDiv.classList.remove('hidden');
           return;
@@ -205,17 +190,15 @@
         });
 
         if (error) {
-          errorDiv.className = "text-xs text-rose-500 font-semibold";
           errorDiv.innerText = error.message;
           errorDiv.classList.remove('hidden');
           return;
         }
 
-        // If email confirmation is disabled, data.session will exist immediately
         if (data.session) {
           window.location.href = 'parent-dashboard.html';
         } else {
-          errorDiv.className = "text-xs text-emerald-600 font-semibold";
+          errorDiv.style.color = '#059669';
           errorDiv.innerText = "Account created! Please check your email for the verification code.";
           errorDiv.classList.remove('hidden');
 
@@ -224,7 +207,6 @@
         }
       } catch (err) {
         console.error("Signup error:", err);
-        errorDiv.className = "text-xs text-rose-500 font-semibold";
         errorDiv.innerText = "Something went wrong during signup.";
         errorDiv.classList.remove('hidden');
       }
@@ -243,7 +225,6 @@
         });
 
         if (error) {
-          errorDiv.className = "text-xs text-rose-500 font-semibold";
           errorDiv.innerText = error.message;
           errorDiv.classList.remove('hidden');
         } else {
@@ -251,7 +232,6 @@
         }
       } catch (err) {
         console.error("Verification error:", err);
-        errorDiv.className = "text-xs text-rose-500 font-semibold";
         errorDiv.innerText = "Invalid verification code.";
         errorDiv.classList.remove('hidden');
       }
