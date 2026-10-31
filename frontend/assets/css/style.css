@@ -379,8 +379,6 @@ html, body {
 /* ==========================================================================
    5. PAGE: INDEX.HTML STYLES (Collapse in editor as needed)
    ========================================================================== */
-
-/* --- Hero Section --- */
 .hero-container {
   background: linear-gradient(to bottom, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05), #ffffff);
   padding-top: 4rem;
@@ -430,6 +428,11 @@ html, body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.hero-badge-icon {
+  width: 14px;
+  height: 14px;
 }
 
 .hero-title {
@@ -492,6 +495,12 @@ html, body {
   border: 1px solid var(--color-slate-100);
 }
 
+.search-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-slate-400);
+}
+
 .search-input-field {
   background: transparent;
   border: none;
@@ -518,6 +527,141 @@ html, body {
 }
 .btn-primary:hover {
   background-color: var(--color-amber-600);
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.search-result-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--color-amber-50);
+  border: 1px solid var(--color-amber-200);
+  color: var(--color-amber-900);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* --- Hero Preview Card & Glow --- */
+.hero-glow-blob {
+  position: absolute;
+  top: -1.5rem;
+  left: -1.5rem;
+  width: 8rem;
+  height: 8rem;
+  background-color: rgba(252, 211, 77, 0.3);
+  border-radius: 9999px;
+  filter: blur(24px);
+}
+
+.hero-preview-card {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--color-slate-100);
+}
+
+.hero-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-slate-100);
+}
+
+.hero-preview-user-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hero-preview-icon-wrap {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: #ecfdf5;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-preview-check-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.hero-preview-title {
+  font-weight: 700;
+  color: var(--color-slate-900);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.hero-preview-subtitle {
+  font-size: 0.75rem;
+  color: var(--color-slate-500);
+  margin: 0;
+}
+
+.hero-preview-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #059669;
+  background-color: #ecfdf5;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.hero-status-container {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--color-slate-50);
+  border-radius: 1rem;
+  border: 1px solid var(--color-slate-100);
+}
+
+.hero-status-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-slate-500);
+}
+
+.hero-status-enroute {
+  color: var(--color-amber-600);
+}
+
+.hero-progress-track {
+  margin-top: 0.75rem;
+  height: 0.5rem;
+  width: 100%;
+  background-color: var(--color-slate-200);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.hero-progress-bar {
+  height: 100%;
+  background-color: var(--color-amber-500);
+  width: 75%;
+}
+
+.hero-status-footer {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--color-slate-700);
+  font-weight: 700;
 }
 
 /* --- Live Stats Bar Component --- */
@@ -561,6 +705,144 @@ html, body {
 }
 @media (min-width: 640px) {
   .stat-label { font-size: 0.875rem; }
+}
+
+/* --- Interactive Bus Pass Calculator --- */
+.calculator-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  background-color: var(--color-slate-50);
+  border-top: 1px solid var(--color-slate-200);
+}
+
+.calculator-container {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.calculator-card {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-slate-200);
+}
+
+.calculator-heading {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--color-slate-900);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.calc-inner-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .calc-inner-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.calculator-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.calculator-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-slate-700);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.calculator-range {
+  width: 100%;
+  accent-color: var(--color-amber-500);
+}
+
+.calculator-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-amber-600);
+  margin-top: 0.25rem;
+}
+
+.calculator-select {
+  width: 100%;
+  background-color: var(--color-slate-50);
+  border: 1px solid var(--color-slate-200);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.calculator-output-box {
+  background-color: var(--color-amber-500);
+  color: var(--color-slate-950);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.calculator-output-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-slate-900);
+}
+
+.calculator-price {
+  font-size: 2.25rem;
+  font-weight: 900;
+}
+
+.calculator-price-unit {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.calculator-output-desc {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-slate-900);
+  margin: 0;
+}
+
+.calculator-cta-btn {
+  margin-top: 1rem;
+  display: inline-block;
+  width: 100%;
+  background-color: var(--color-slate-950);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.625rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.calculator-cta-btn:hover {
+  background-color: var(--color-slate-800);
 }
 
 /* ==========================================================================
